@@ -163,6 +163,23 @@
                         <flush-strategy>IdleConnections</flush-strategy>
                     </pool>
                 </datasource>
+                <datasource jndi-name="java:jboss/datasources/GETrackingMySQLDS" enabled="true" use-java-context="true" pool-name="GETrackingMySQLDS" use-ccm="true">
+                    <connection-url>jdbc:mysql://guaraniexpress.com:3306/guaraniexpress</connection-url>
+                    <driver>mysql</driver>
+                    <security>
+                      <user-name>getracking_root</user-name>
+                      <password>Q5z69En@2013guarani</password>
+                    </security>
+                    <validation>
+                        <check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+                        <background-validation>true</background-validation>
+                        <background-validation-millis>60000</background-validation-millis>
+                        <!--<validate-on-match>true</validate-on-match>-->
+                    </validation>
+                    <pool>
+                        <flush-strategy>IdleConnections</flush-strategy>
+                    </pool>
+                </datasource>
                 <datasource jndi-name="java:jboss/datasources/PostgreSQLDS" enabled="${postgresql.enabled}" use-java-context="true" pool-name="PostgreSQLDS" use-ccm="true">
                     <connection-url>jdbc:postgresql://${env.OPENSHIFT_POSTGRESQL_DB_HOST}:${env.OPENSHIFT_POSTGRESQL_DB_PORT}/${env.OPENSHIFT_APP_NAME}</connection-url>
                     <driver>postgresql</driver>
