@@ -8,14 +8,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.guaraniexpress.tracking.boundary.PaisService;
 import com.guaraniexpress.tracking.entities.Pais;
 
 @Path("paises")
-@Produces(MediaType.APPLICATION_XML)
+@Produces("application/json;charset=UTF-8")
 public class PaisResource {
 	
 	@Inject
