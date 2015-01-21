@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.guaraniexpress.tracking.boundary.PaisService;
 import com.guaraniexpress.tracking.entities.Pais;
@@ -21,16 +22,16 @@ public class PaisResource {
 	private PaisService ps;
 	
 	@GET
-	public List<Pais> findAll() {
+	public Response findAll() {
 		List<Pais> resultList =
 				ps.findAll();
 		
-		return resultList;
+		return Response.ok(resultList).build();
 	}
 	
 	@GET
 	@Path("{idPais}")
-	public Pais find(@PathParam("idPais") @NotNull(message="Identifier is required") Integer idPais) {
-		return ps.find(idPais);
+	public Response find(@PathParam("idPais") @NotNull(message="Identifier is required") Integer idPais) {
+		return Response.ok(ps.find(idPais)).build();
 	}
 }
