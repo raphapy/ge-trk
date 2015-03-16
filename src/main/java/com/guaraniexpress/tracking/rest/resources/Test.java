@@ -10,8 +10,8 @@ import javax.ws.rs.QueryParam;
 @Produces("application/json;charset=UTF-8")
 public class Test {
 
-	@GET
-	@Path("hello")
+		@GET
+		@Path("hello")	
 	public String sayHello(
 			@QueryParam("name") @NotNull(message = "Name is required argurment!") String name) {
 		return "Hello "
