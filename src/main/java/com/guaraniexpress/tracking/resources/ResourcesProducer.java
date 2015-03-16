@@ -10,6 +10,7 @@ public class ResourcesProducer {
 	private EntityManager em;
 
 	@Produces
+	@GuaraniExpressPersistence
 	public EntityManager obtainEntityManager() {
 		return this.em;
 	}
