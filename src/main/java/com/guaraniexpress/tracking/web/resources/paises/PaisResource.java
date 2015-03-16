@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.rest.resources.paises;
+package com.guaraniexpress.tracking.web.resources.paises;
 
 import java.util.List;
 

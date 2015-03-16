@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.rest;
+package com.guaraniexpress.tracking.web;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

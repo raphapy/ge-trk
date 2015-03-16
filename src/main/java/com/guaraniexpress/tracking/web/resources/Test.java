@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.rest.resources;
+package com.guaraniexpress.tracking.web.resources;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;

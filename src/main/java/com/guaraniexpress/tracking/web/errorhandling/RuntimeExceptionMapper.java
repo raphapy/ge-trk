@@ -1,6 +1,6 @@
-package com.guaraniexpress.tracking.rest.errorhandling;
+package com.guaraniexpress.tracking.web.errorhandling;
 
-import static com.guaraniexpress.tracking.rest.errorhandling.Error.build;
+import static com.guaraniexpress.tracking.web.errorhandling.Error.build;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

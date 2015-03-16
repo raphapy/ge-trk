@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.rest.errorhandling;
+package com.guaraniexpress.tracking.web.errorhandling;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;

@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.rest.errorhandling;
+package com.guaraniexpress.tracking.web.errorhandling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.guaraniexpress.tracking.rest.CustomMediaType;
+import com.guaraniexpress.tracking.web.CustomMediaType;
 
 public class Error {
 	

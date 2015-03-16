@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.rest.resources.usuarios;
+package com.guaraniexpress.tracking.web.resources.usuarios;
 
 import javax.ws.rs.Path;
 

@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.rest;
+package com.guaraniexpress.tracking.web;
 
 import java.io.Serializable;
 import java.util.List;
