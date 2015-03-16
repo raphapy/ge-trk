@@ -1,4 +1,4 @@
-package com.guaraniexpress.tracking.dao.i18n;
+package com.guaraniexpress.tracking.i18n;
 
 import java.text.MessageFormat;
 import java.util.Locale;
