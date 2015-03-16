@@ -16,7 +16,7 @@ import com.googlecode.genericdao.search.ExampleOptions;
 import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.hibernate.HibernateMetadataUtil;
 import com.googlecode.genericdao.search.jpa.JPASearchProcessor;
-import com.guaraniexpress.tracking.dao.i18n.Messages;
+import com.guaraniexpress.tracking.i18n.Messages;
 
 public abstract class AbstractGenericDAO<T, ID extends Serializable> implements GenericDAO<T, ID>{
 	
@@ -135,7 +135,17 @@ public abstract class AbstractGenericDAO<T, ID extends Serializable> implements 
         Search searchConfig = this.getSearchConfig(jpaSP, example, null, true, null, null, null, null, like);
         return jpaSP.count(getEm(), searchConfig);
     }
-
+    
+    @Override
+    public List<T> list(String[] orderBy, String[] dir) {
+    	return this.list(null, false, null, null, orderBy, dir, false);
+    }
+    
+    @Override
+    public List<T> list(Integer firstResult, Integer cantResultado, String[] orderBy, String[] dir) {
+    	return this.list(null,false,firstResult,cantResultado,orderBy,dir,false);
+    }
+    
     @Override
     public List<T> list() {
         return this.list(null, true, null, null, null, null, false);

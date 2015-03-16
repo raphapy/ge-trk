@@ -6,12 +6,12 @@ import javax.persistence.PersistenceContext;
 
 public class ResourcesProducer {
 
-	@PersistenceContext(name="GETrackingPU")
-	private EntityManager em;
+	@PersistenceContext(name = "GETrackingPU")
+	private EntityManager guaraniExpressEntityManager;
 
 	@Produces
 	@GuaraniExpressPersistence
-	public EntityManager obtainEntityManager() {
-		return this.em;
+	public EntityManager obtainGuaraniExpressEntityManager() {
+		return this.guaraniExpressEntityManager;
 	}
 }

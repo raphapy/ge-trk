@@ -34,6 +34,10 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     public List<T> list(Integer firstResult, Integer cantResultado);
 
+    public List<T> list(String[] orderBy, String[] dir);
+    
+    public List<T> list(Integer firstResult, Integer cantResultado, String[] orderBy, String[] dir);
+    
     public List<T> list(T example);
 
     public List<T> list(T example, boolean like);
