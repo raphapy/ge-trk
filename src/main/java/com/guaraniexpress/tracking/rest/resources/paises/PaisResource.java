@@ -23,7 +23,7 @@ public class PaisResource {
 	@GET
 	public Response findAll() {
 		List<Pais> resultList =
-				ps.findAll();
+				ps.list();
 		
 		return Response.ok(resultList).build();
 	}
@@ -31,6 +31,6 @@ public class PaisResource {
 	@GET
 	@Path("{idPais}")
 	public Response find(@PathParam("idPais") @NotNull(message="Identifier is required") Integer idPais) {
-		return Response.ok(ps.find(idPais)).build();
+		return Response.ok(ps.get(idPais)).build();
 	}
 }
