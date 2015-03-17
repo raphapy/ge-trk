@@ -1,0 +1,30 @@
+package com.guaraniexpress.tracking.web.resources.globals;
+
+import javax.inject.Inject;
+import javax.ws.rs.Path;
+
+import com.guaraniexpress.tracking.boundary.globals.PaisService;
+import com.guaraniexpress.tracking.entities.globals.Pais;
+import com.guaraniexpress.tracking.web.ReadableResource;
+
+@Path("paises")
+public class PaisResource extends ReadableResource<Pais, Integer, PaisService> {
+
+	@Inject
+	private PaisService ps;
+
+	@Override
+	protected PaisService getDelegatedDao() {
+		return this.ps;
+	}
+
+	@Override
+	protected Class<Pais> getEntityBeanType() {
+		return Pais.class;
+	}
+
+	@Override
+	protected Class<Integer> getEntityKeyType() {
+		return Integer.class;
+	}
+}

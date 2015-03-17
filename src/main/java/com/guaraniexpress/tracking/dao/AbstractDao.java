@@ -29,7 +29,7 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
 
     private EntityManager getEm() {
         if (getEntityManager() == null) {
-            throw new IllegalStateException(Messages.getString("GenericDAOImpl.NO_ENTITY_MANAGER_MESSAGE"));
+            throw new IllegalStateException(Messages.getString("AbstractDao.NO_ENTITY_MANAGER_MESSAGE"));
         }
         return getEntityManager();
     }
@@ -64,7 +64,7 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
             return list.get(0);
         }
 
-        throw new NonUniqueResultException(Messages.getString("GenericDAOImpl.NON_UNIQUE_MESSAGE", this.getEntityBeanType().getCanonicalName()));
+        throw new NonUniqueResultException(Messages.getString("AbstractDao.NON_UNIQUE_MESSAGE", this.getEntityBeanType().getCanonicalName()));
     }
     
     @Override
@@ -80,7 +80,7 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
             return t;
         }
 
-        throw new NonUniqueResultException(Messages.getString("GenericDAOImpl.NON_UNIQUE_MESSAGE", this.getEntityBeanType().getCanonicalName()));
+        throw new NonUniqueResultException(Messages.getString("AbstractDao.NON_UNIQUE_MESSAGE", this.getEntityBeanType().getCanonicalName()));
     }
 
     @Override
@@ -95,7 +95,7 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
             return lista.get(0);
         }
 
-        throw new NonUniqueResultException(Messages.getString("GenericDAOImpl.NON_UNIQUE_MESSAGE", this.getEntityBeanType().getCanonicalName()));
+        throw new NonUniqueResultException(Messages.getString("AbstractDao.NON_UNIQUE_MESSAGE", this.getEntityBeanType().getCanonicalName()));
     }
 
     @Override
@@ -120,17 +120,87 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
     }
 
     @Override
+    public Integer count(String[] orderBy, String[] dir) {
+    	return this.count(null, false, null, null, orderBy, dir, false);
+    }
+    
+    @Override
+    public Integer count(Integer firstResult, Integer cantResultado, String[] orderBy, String[] dir) {
+    	return this.count(null,false,firstResult,cantResultado,orderBy,dir,false);
+    }
+    
+    @Override
     public Integer count() {
-        return this.count(null, false);
+        return this.count(null, true, null, null, null, null, false);
+    }
+
+    @Override
+    public Integer count(Integer firstResult, Integer cantResultado) {
+        return this.count(null, false, firstResult, cantResultado, null, null, false);
     }
 
     @Override
     public Integer count(T example) {
-        return this.count(example, false);
+        return this.count(example, true, null, null, null, null, false);
     }
 
     @Override
     public Integer count(T example, boolean like) {
+        return this.count(example, true, null, null, null, null, like);
+    }
+
+    @Override
+    public Integer count(T example, String orderByAttrList, String orderByDirList) {
+        return this.count(example, true, null, null, new String[]{orderByAttrList}, new String[]{orderByDirList}, false);
+    }
+
+    @Override
+    public Integer count(T example, String orderByAttrList, String orderByDirList, boolean like) {
+        return this.count(example, true, null, null, new String[]{orderByAttrList}, new String[]{orderByDirList}, like);
+    }
+
+    @Override
+    public Integer count(T example, String[] orderByAttrList, String[] orderByDirList) {
+        return this.count(example, true, null, null, orderByAttrList, orderByDirList, false);
+    }
+
+    @Override
+    public Integer count(T example, String[] orderByAttrList, String[] orderByDirList, boolean like) {
+        return this.count(example, true, null, null, orderByAttrList, orderByDirList, like);
+    }
+
+    @Override
+    public Integer count(T example, Integer firstResult, Integer numberOfResult) {
+        return this.count(example, false, firstResult, numberOfResult, null, null, false);
+    }
+
+    @Override
+    public Integer count(T example, Integer firstResult, Integer numberOfResult, boolean like) {
+        return this.count(example, false, firstResult, numberOfResult, null, null, like);
+    }
+
+    @Override
+    public Integer count(T example, Integer firstResult, Integer numberOfResult, String orderByAttrList, String orderByDirList) {
+        return this.count(example, false, firstResult, numberOfResult, new String[]{orderByAttrList}, new String[]{orderByDirList}, false);
+    }
+
+    @Override
+    public Integer count(T example, Integer firstResult, Integer numberOfResult, String orderByAttrList, String orderByDirList, boolean like) {
+        return this.count(example, false, firstResult, numberOfResult, new String[]{orderByAttrList}, new String[]{orderByDirList}, like);
+    }
+
+    @Override
+    public Integer count(T example, Integer firstResult, Integer numberOfResult, String[] orderByAttrList, String[] orderByDirList) {
+        return this.count(example, false, firstResult, numberOfResult, orderByAttrList, orderByDirList, false);
+    }
+
+    @Override
+    public Integer count(T example, Integer firstResult, Integer numberOfResult, String[] orderByAttrList, String[] orderByDirList, boolean like) {
+        return this.count(example, false, firstResult, numberOfResult, orderByAttrList, orderByDirList, like);
+    }
+
+    @Override
+    public Integer count(T example, boolean all, Integer firstResult, Integer numberOfResult, String[] orderByAttrList, String[] orderByDirList, boolean like) {
         JPASearchProcessor jpaSP = new JPASearchProcessor(HibernateMetadataUtil.getInstanceForSessionFactory(this.getSessionFactory()));
         Search searchConfig = this.getSearchConfig(jpaSP, example, null, true, null, null, null, null, like);
         return jpaSP.count(getEm(), searchConfig);
@@ -290,7 +360,7 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
     @Override
     public List<Map<String, Object>> listAttributes(T example, String[] attributes, boolean all, Integer firstResult, Integer numberOfResult, String[] orderByAttrList, String[] orderByDirList, boolean like) {
         if (attributes == null || attributes.length == 0) {
-            throw new RuntimeException(Messages.getString("GenericDAOImpl.REQUIRED_ATTRIBUTES_LIST_MESSAGE"));
+            throw new RuntimeException(Messages.getString("AbstractDao.REQUIRED_ATTRIBUTES_LIST_MESSAGE"));
         }
 
         JPASearchProcessor jpaSP = new JPASearchProcessor(HibernateMetadataUtil.getInstanceForSessionFactory(this.getSessionFactory()));
@@ -330,9 +400,9 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
                 }
             }
         } else if ((orderByAttrList != null && orderByDirList == null) || (orderByAttrList == null && orderByDirList != null)) {
-            throw new RuntimeException(Messages.getString("GenericDAOImpl.REQUIRED_ORDER_LIST_ORDER_DIR_MESSAGE"));
+            throw new RuntimeException(Messages.getString("AbstractDao.REQUIRED_ORDER_LIST_ORDER_DIR_MESSAGE"));
         } else if (orderByAttrList != null && orderByDirList != null && orderByAttrList.length != orderByDirList.length) {
-            throw new RuntimeException(Messages.getString("GenericDAOImpl.ORDER_LIST_ORDER_DIR_LENGHT_NO_MATCH_MESSAGE")); 
+            throw new RuntimeException(Messages.getString("AbstractDao.ORDER_LIST_ORDER_DIR_LENGHT_NO_MATCH_MESSAGE")); 
         }
 
 
