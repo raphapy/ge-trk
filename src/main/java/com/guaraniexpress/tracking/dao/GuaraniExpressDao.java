@@ -7,8 +7,8 @@ import javax.persistence.EntityManager;
 
 import com.guaraniexpress.tracking.resources.GuaraniExpressPersistence;
 
-public abstract class GuaraniExpressDAO<T, ID extends Serializable> extends
-		AbstractGenericDAO<T, Serializable> {
+public abstract class GuaraniExpressDao<T, ID extends Serializable> extends
+		AbstractDao<T, Serializable> {
 
 	@Inject
 	@GuaraniExpressPersistence

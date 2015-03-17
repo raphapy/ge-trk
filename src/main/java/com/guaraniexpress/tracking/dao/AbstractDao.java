@@ -18,9 +18,9 @@ import com.googlecode.genericdao.search.hibernate.HibernateMetadataUtil;
 import com.googlecode.genericdao.search.jpa.JPASearchProcessor;
 import com.guaraniexpress.tracking.i18n.Messages;
 
-public abstract class AbstractGenericDAO<T, ID extends Serializable> implements GenericDAO<T, ID>{
+public abstract class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID>{
 	
-    public AbstractGenericDAO() {
+    public AbstractDao() {
     }
     
     protected abstract EntityManager getEntityManager();
