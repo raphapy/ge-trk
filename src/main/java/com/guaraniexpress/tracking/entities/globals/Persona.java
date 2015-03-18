@@ -6,35 +6,27 @@
 package com.guaraniexpress.tracking.entities.globals;
 
 import java.io.Serializable;
-import java.util.List;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.guaraniexpress.tracking.entities.application.Usuario;
 
 /**
  *
  * @author raphapy
  */
 @Entity
-@Table(name = "persona")
+@Table(name = "persona", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p"),
@@ -70,18 +62,9 @@ public class Persona implements Serializable {
     @NotNull
     @Column(name = "localizacion_persona")
     private short localizacionPersona;
-    @JoinColumns({
-        @JoinColumn(name = "ciudad", referencedColumnName = "id_ciudad"),
-        @JoinColumn(name = "localidad", referencedColumnName = "localidad"),
-        @JoinColumn(name = "pais", referencedColumnName = "pais")})
+    @JoinColumn(name = "ciudad", referencedColumnName = "id_ciudad")
     @ManyToOne(optional = false)
     private Ciudad ciudad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private List<DocumentoIdentificacion> documentoIdentificacionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private List<Usuario> usuarioList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona1")
-    private List<InformacionContactoPersona> informacionContactoPersonaList;
 
     public Persona() {
     }
@@ -153,33 +136,6 @@ public class Persona implements Serializable {
         this.ciudad = ciudad;
     }
 
-    @XmlTransient
-    public List<DocumentoIdentificacion> getDocumentoIdentificacionList() {
-        return documentoIdentificacionList;
-    }
-
-    public void setDocumentoIdentificacionList(List<DocumentoIdentificacion> documentoIdentificacionList) {
-        this.documentoIdentificacionList = documentoIdentificacionList;
-    }
-
-    @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
-
-    @XmlTransient
-    public List<InformacionContactoPersona> getInformacionContactoPersonaList() {
-        return informacionContactoPersonaList;
-    }
-
-    public void setInformacionContactoPersonaList(List<InformacionContactoPersona> informacionContactoPersonaList) {
-        this.informacionContactoPersonaList = informacionContactoPersonaList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -202,7 +158,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Persona[ idPersona=" + idPersona + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.Persona[ idPersona=" + idPersona + " ]";
     }
     
 }

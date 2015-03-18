@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "estado_tracking")
+@Table(name = "estado_tracking", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EstadoTracking.findAll", query = "SELECT e FROM EstadoTracking e"),
@@ -36,10 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class EstadoTracking implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_estado_tracking")
-    private Integer idEstadoTracking;
+    private Short idEstadoTracking;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -58,21 +60,21 @@ public class EstadoTracking implements Serializable {
     public EstadoTracking() {
     }
 
-    public EstadoTracking(Integer idEstadoTracking) {
+    public EstadoTracking(Short idEstadoTracking) {
         this.idEstadoTracking = idEstadoTracking;
     }
 
-    public EstadoTracking(Integer idEstadoTracking, String nombre, String descripcion) {
+    public EstadoTracking(Short idEstadoTracking, String nombre, String descripcion) {
         this.idEstadoTracking = idEstadoTracking;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public Integer getIdEstadoTracking() {
+    public Short getIdEstadoTracking() {
         return idEstadoTracking;
     }
 
-    public void setIdEstadoTracking(Integer idEstadoTracking) {
+    public void setIdEstadoTracking(Short idEstadoTracking) {
         this.idEstadoTracking = idEstadoTracking;
     }
 
@@ -132,7 +134,7 @@ public class EstadoTracking implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.EstadoTracking[ idEstadoTracking=" + idEstadoTracking + " ]";
+        return "com.guaraniexpress.tracking.entities.main.EstadoTracking[ idEstadoTracking=" + idEstadoTracking + " ]";
     }
     
 }

@@ -10,8 +10,10 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -28,21 +30,23 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "localidad")
+@Table(name = "localidad", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
-    @NamedQuery(name = "Localidad.findByIdLocalidad", query = "SELECT l FROM Localidad l WHERE l.localidadPK.idLocalidad = :idLocalidad"),
-    @NamedQuery(name = "Localidad.findByPais", query = "SELECT l FROM Localidad l WHERE l.localidadPK.pais = :pais"),
+    @NamedQuery(name = "Localidad.findByIdLocalidad", query = "SELECT l FROM Localidad l WHERE l.idLocalidad = :idLocalidad"),
     @NamedQuery(name = "Localidad.findByCodigo", query = "SELECT l FROM Localidad l WHERE l.codigo = :codigo"),
     @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
 public class Localidad implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected LocalidadPK localidadPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_localidad")
+    private Short idLocalidad;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2)
+    @Size(min = 1, max = 6)
     @Column(name = "codigo")
     private String codigo;
     @Basic(optional = false)
@@ -50,35 +54,31 @@ public class Localidad implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localidad1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localidad")
     private List<Ciudad> ciudadList;
-    @JoinColumn(name = "pais", referencedColumnName = "id_pais", insertable = false, updatable = false)
+    @JoinColumn(name = "pais", referencedColumnName = "id_pais")
     @ManyToOne(optional = false)
-    private Pais pais1;
+    private Pais pais;
 
     public Localidad() {
     }
 
-    public Localidad(LocalidadPK localidadPK) {
-        this.localidadPK = localidadPK;
+    public Localidad(Short idLocalidad) {
+        this.idLocalidad = idLocalidad;
     }
 
-    public Localidad(LocalidadPK localidadPK, String codigo, String nombre) {
-        this.localidadPK = localidadPK;
+    public Localidad(Short idLocalidad, String codigo, String nombre) {
+        this.idLocalidad = idLocalidad;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public Localidad(short idLocalidad, short pais) {
-        this.localidadPK = new LocalidadPK(idLocalidad, pais);
+    public Short getIdLocalidad() {
+        return idLocalidad;
     }
 
-    public LocalidadPK getLocalidadPK() {
-        return localidadPK;
-    }
-
-    public void setLocalidadPK(LocalidadPK localidadPK) {
-        this.localidadPK = localidadPK;
+    public void setIdLocalidad(Short idLocalidad) {
+        this.idLocalidad = idLocalidad;
     }
 
     public String getCodigo() {
@@ -106,18 +106,19 @@ public class Localidad implements Serializable {
         this.ciudadList = ciudadList;
     }
 
-    public Pais getPais1() {
-        return pais1;
+    @XmlTransient
+    public Pais getPais() {
+        return pais;
     }
 
-    public void setPais1(Pais pais1) {
-        this.pais1 = pais1;
+    public void setPais(Pais pais) {
+        this.pais = pais;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (localidadPK != null ? localidadPK.hashCode() : 0);
+        hash += (idLocalidad != null ? idLocalidad.hashCode() : 0);
         return hash;
     }
 
@@ -128,7 +129,7 @@ public class Localidad implements Serializable {
             return false;
         }
         Localidad other = (Localidad) object;
-        if ((this.localidadPK == null && other.localidadPK != null) || (this.localidadPK != null && !this.localidadPK.equals(other.localidadPK))) {
+        if ((this.idLocalidad == null && other.idLocalidad != null) || (this.idLocalidad != null && !this.idLocalidad.equals(other.idLocalidad))) {
             return false;
         }
         return true;
@@ -136,7 +137,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Localidad[ localidadPK=" + localidadPK + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.Localidad[ idLocalidad=" + idLocalidad + " ]";
     }
     
 }

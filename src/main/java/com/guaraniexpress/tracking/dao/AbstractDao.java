@@ -99,13 +99,15 @@ public abstract class AbstractDao<T, ID extends Serializable> implements Generic
     }
 
     @Override
-    public void save(T entity) throws Exception {
+    public T save(T entity) throws Exception {
         this.getEm().persist(entity);
+        return entity;
     }
 
     @Override
-    public void update(T entity) throws Exception {
+    public T update(T entity) throws Exception {
         this.getEm().merge(entity);
+        return entity;
     }
 
     @Override

@@ -5,13 +5,15 @@
  */
 package com.guaraniexpress.tracking.entities.main;
 
+import com.guaraniexpress.tracking.entities.application.Usuario;
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -22,67 +24,63 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.guaraniexpress.tracking.entities.application.Usuario;
-
 /**
  *
  * @author raphapy
  */
 @Entity
-@Table(name = "detalle_tracking_paquete")
+@Table(name = "detalle_tracking_paquete", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetalleTrackingPaquete.findAll", query = "SELECT d FROM DetalleTrackingPaquete d"),
-    @NamedQuery(name = "DetalleTrackingPaquete.findByIdDetalleTrackingPaquete", query = "SELECT d FROM DetalleTrackingPaquete d WHERE d.detalleTrackingPaquetePK.idDetalleTrackingPaquete = :idDetalleTrackingPaquete"),
-    @NamedQuery(name = "DetalleTrackingPaquete.findByTrackingPaquete", query = "SELECT d FROM DetalleTrackingPaquete d WHERE d.detalleTrackingPaquetePK.trackingPaquete = :trackingPaquete"),
+    @NamedQuery(name = "DetalleTrackingPaquete.findByIdDetalleTrackingPaquete", query = "SELECT d FROM DetalleTrackingPaquete d WHERE d.idDetalleTrackingPaquete = :idDetalleTrackingPaquete"),
     @NamedQuery(name = "DetalleTrackingPaquete.findByFechaHora", query = "SELECT d FROM DetalleTrackingPaquete d WHERE d.fechaHora = :fechaHora")})
 public class DetalleTrackingPaquete implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected DetalleTrackingPaquetePK detalleTrackingPaquetePK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_detalle_tracking_paquete")
+    private Short idDetalleTrackingPaquete;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_hora")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
-    @JoinColumn(name = "evento_tracking", referencedColumnName = "id_evento_tracking")
-    @ManyToOne(optional = false)
-    private EventoTracking eventoTracking;
     @JoinColumn(name = "usuario_evento", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
     private Usuario usuarioEvento;
+    @JoinColumn(name = "evento_tracking", referencedColumnName = "id_evento_tracking")
+    @ManyToOne(optional = false)
+    private EventoTracking eventoTracking;
     @JoinColumn(name = "origen", referencedColumnName = "id_sitio_recepcion_envio")
     @ManyToOne
     private SitioRecepcionEnvio origen;
     @JoinColumn(name = "destino", referencedColumnName = "id_sitio_recepcion_envio")
     @ManyToOne
     private SitioRecepcionEnvio destino;
-    @JoinColumn(name = "tracking_paquete", referencedColumnName = "paquete", insertable = false, updatable = false)
+    @JoinColumn(name = "tracking_paquete", referencedColumnName = "id_tracking_paquete")
     @ManyToOne(optional = false)
-    private TrackingPaquete trackingPaquete1;
+    private TrackingPaquete trackingPaquete;
 
     public DetalleTrackingPaquete() {
     }
 
-    public DetalleTrackingPaquete(DetalleTrackingPaquetePK detalleTrackingPaquetePK) {
-        this.detalleTrackingPaquetePK = detalleTrackingPaquetePK;
+    public DetalleTrackingPaquete(Short idDetalleTrackingPaquete) {
+        this.idDetalleTrackingPaquete = idDetalleTrackingPaquete;
     }
 
-    public DetalleTrackingPaquete(DetalleTrackingPaquetePK detalleTrackingPaquetePK, Date fechaHora) {
-        this.detalleTrackingPaquetePK = detalleTrackingPaquetePK;
+    public DetalleTrackingPaquete(Short idDetalleTrackingPaquete, Date fechaHora) {
+        this.idDetalleTrackingPaquete = idDetalleTrackingPaquete;
         this.fechaHora = fechaHora;
     }
 
-    public DetalleTrackingPaquete(short idDetalleTrackingPaquete, int trackingPaquete) {
-        this.detalleTrackingPaquetePK = new DetalleTrackingPaquetePK(idDetalleTrackingPaquete, trackingPaquete);
+    public Short getIdDetalleTrackingPaquete() {
+        return idDetalleTrackingPaquete;
     }
 
-    public DetalleTrackingPaquetePK getDetalleTrackingPaquetePK() {
-        return detalleTrackingPaquetePK;
-    }
-
-    public void setDetalleTrackingPaquetePK(DetalleTrackingPaquetePK detalleTrackingPaquetePK) {
-        this.detalleTrackingPaquetePK = detalleTrackingPaquetePK;
+    public void setIdDetalleTrackingPaquete(Short idDetalleTrackingPaquete) {
+        this.idDetalleTrackingPaquete = idDetalleTrackingPaquete;
     }
 
     public Date getFechaHora() {
@@ -93,20 +91,20 @@ public class DetalleTrackingPaquete implements Serializable {
         this.fechaHora = fechaHora;
     }
 
-    public EventoTracking getEventoTracking() {
-        return eventoTracking;
-    }
-
-    public void setEventoTracking(EventoTracking eventoTracking) {
-        this.eventoTracking = eventoTracking;
-    }
-
     public Usuario getUsuarioEvento() {
         return usuarioEvento;
     }
 
     public void setUsuarioEvento(Usuario usuarioEvento) {
         this.usuarioEvento = usuarioEvento;
+    }
+
+    public EventoTracking getEventoTracking() {
+        return eventoTracking;
+    }
+
+    public void setEventoTracking(EventoTracking eventoTracking) {
+        this.eventoTracking = eventoTracking;
     }
 
     public SitioRecepcionEnvio getOrigen() {
@@ -125,18 +123,18 @@ public class DetalleTrackingPaquete implements Serializable {
         this.destino = destino;
     }
 
-    public TrackingPaquete getTrackingPaquete1() {
-        return trackingPaquete1;
+    public TrackingPaquete getTrackingPaquete() {
+        return trackingPaquete;
     }
 
-    public void setTrackingPaquete1(TrackingPaquete trackingPaquete1) {
-        this.trackingPaquete1 = trackingPaquete1;
+    public void setTrackingPaquete(TrackingPaquete trackingPaquete) {
+        this.trackingPaquete = trackingPaquete;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (detalleTrackingPaquetePK != null ? detalleTrackingPaquetePK.hashCode() : 0);
+        hash += (idDetalleTrackingPaquete != null ? idDetalleTrackingPaquete.hashCode() : 0);
         return hash;
     }
 
@@ -147,7 +145,7 @@ public class DetalleTrackingPaquete implements Serializable {
             return false;
         }
         DetalleTrackingPaquete other = (DetalleTrackingPaquete) object;
-        if ((this.detalleTrackingPaquetePK == null && other.detalleTrackingPaquetePK != null) || (this.detalleTrackingPaquetePK != null && !this.detalleTrackingPaquetePK.equals(other.detalleTrackingPaquetePK))) {
+        if ((this.idDetalleTrackingPaquete == null && other.idDetalleTrackingPaquete != null) || (this.idDetalleTrackingPaquete != null && !this.idDetalleTrackingPaquete.equals(other.idDetalleTrackingPaquete))) {
             return false;
         }
         return true;
@@ -155,7 +153,7 @@ public class DetalleTrackingPaquete implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.DetalleTrackingPaquete[ detalleTrackingPaquetePK=" + detalleTrackingPaquetePK + " ]";
+        return "com.guaraniexpress.tracking.entities.main.DetalleTrackingPaquete[ idDetalleTrackingPaquete=" + idDetalleTrackingPaquete + " ]";
     }
     
 }

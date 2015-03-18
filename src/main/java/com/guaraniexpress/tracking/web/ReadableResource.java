@@ -18,6 +18,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.guaraniexpress.tracking.dao.GenericDao;
 import com.guaraniexpress.tracking.exceptions.ApplicationException;
+import com.guaraniexpress.tracking.i18n.Messages;
 import com.guaraniexpress.tracking.utils.ServiceUtils;
 
 @SuppressWarnings("rawtypes")
@@ -50,7 +51,7 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 	@DefaultValue(PAGE_SIZE_PARAM_DEFAULT_VALUE)
 	@Max(value = PAGINATION_MAX_SIZE, message = "{ReadableResource.pageSize.Max}")
 	private Integer pageSize;
-	
+
 	@QueryParam(USING_LIKE_PARAM_NAME)
 	@DefaultValue(USING_LIKE_PARAM_DEFAUL_VALUE)
 	private Boolean usingLike;
@@ -62,23 +63,23 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 	private boolean paginable;
 	private boolean filterable;
 	private boolean useKeyForQuery;
-	
+
 	@QueryParam(FILTERS_PARAM_NAME)
-	private String stringifiedFilters;	
-	private T filters;
-	
+	private String stringifiedFilters;
+	protected T filters;
+
 	@QueryParam(KEY_PARAM_NAME)
 	private String stringifiedKey;
-	private ID key;
+	protected ID key;
 
 	protected abstract DAO getDelegatedDao();
 
 	protected abstract Class<T> getEntityBeanType();
+
 	protected abstract Class<ID> getEntityKeyType();
-	
 
 	@PostConstruct
-	private void setupQuerySettings() {
+	private void setupQuerySettings() {	
 
 		// determinig if resource is paginable
 		if (this.pageStart != null && this.pageSize != null) {
@@ -86,52 +87,52 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 		} else {
 			this.setPaginable(false);
 		}
-		
-		//determinig if resource is filterable by key
+
+		// determinig if resource is filterable by key
 		if (!Strings.isNullOrEmpty(stringifiedKey)) {
-			//key deserialization
-			
+			// key deserialization
+
 			try {
 				Gson gson = new Gson();
 				this.key = gson.fromJson(this.stringifiedKey,
 						getEntityKeyType());
-				
-				if (this.key!=null) {
+
+				if (this.key != null) {
 					this.setUseKeyForQuery(true);
 				} else {
 					this.setUseKeyForQuery(false);
 				}
 			} catch (Exception e) {
-				throw new IllegalArgumentException("No se pudo deserializar el parámetro key.", e);
+				throw new IllegalArgumentException(
+						Messages.getString("ReadableResource.ERROR_DURING_KEY_DESERIALIZATION_MESSAGE"), e); //$NON-NLS-1$
 			}
-			
-			
+
 		} else if (!Strings.isNullOrEmpty(stringifiedFilters)) {
 			// determinig if resource is filterable
-				try {
-					Gson gson = new Gson();
-					// getting object to use as filter in the query
-					this.filters = gson.fromJson(this.stringifiedFilters,
-							getEntityBeanType());
-					if (this.filters != null) {
-						this.setFilterable(true);
-					} else {
-						this.setFilterable(false);
-					}
-				} catch (Exception e) {
-					throw new IllegalArgumentException(
-							"No se pudo deserializar el parámetro filters.", e);
+			try {
+				Gson gson = new Gson();
+				// getting object to use as filter in the query
+				this.filters = gson.fromJson(this.stringifiedFilters,
+						getEntityBeanType());
+				if (this.filters != null) {
+					this.setFilterable(true);
+				} else {
+					this.setFilterable(false);
 				}
-				
+			} catch (Exception e) {
+				throw new IllegalArgumentException(
+						Messages.getString("ReadableResource.ERROR_DURING_FILTERS_DESERIALIZATION_MESSAGE"), e); //$NON-NLS-1$
+			}
+
 		} else {
-			
+
 			this.setFilterable(false);
 			this.setUseKeyForQuery(false);
 		}
 
 		// determinig if resource is sortable
 		if (!Strings.isNullOrEmpty(order)) {
-			
+
 			String[] orderByElements = order.split(ORDER_LIST_SPLITTER);
 			Pattern elementPattern = Pattern
 					.compile(ORDER_ELEMENT_REGEXP_PATTERN);
@@ -154,8 +155,9 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 
 					} else {
 						throw new IllegalArgumentException(
-								"Los elementos de ordenamiento no cumplen con el patron correcto. Patrón esperado "
-										+ ORDER_ELEMENT_REGEXP_PATTERN);
+								Messages.getString(
+										"ReadableResource.ORDER_CLAUSE_REGEXP_NOT_MATCH_MESSAGE",
+										ORDER_ELEMENT_REGEXP_PATTERN));
 					}
 				}
 
@@ -166,7 +168,7 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 					this.setSortable(false);
 				}
 			}
-			
+
 		} else {
 			this.setSortable(false);
 		}
@@ -180,20 +182,21 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 
 		if (getDelegatedDao() == null) {
 			throw new IllegalArgumentException(
-					"Se requiere el objeto de acceso a datos para realizar la búsqueda.");
+					Messages.getString("ReadableResource.NO_DAO_PRESENT_MESSAGE")); //$NON-NLS-1$
 		}
 
 		List<T> items = null;
 		Integer totalCount = 0;
 		T item = null;
-		
+
 		if (this.isUseKeyForQuery()) {
-			
+
 			item = (T) getDelegatedDao().get(key);
-			ServiceUtils.validarEncontrado(item, "Recurso no encontrado");
-			
-		} else if(this.isFilterable()) {
-			
+			ServiceUtils.validarEncontrado(item, Messages
+					.getString("ReadableResource.RESOURCE_NOT_FOUND_MESSAGE")); //$NON-NLS-1$
+
+		} else if (this.isFilterable()) {
+
 			if (this.isSortable() && this.isPaginable()) {
 				totalCount = getDelegatedDao().count(this.filters,
 						this.pageStart, this.pageSize,
@@ -212,7 +215,7 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 				items = getDelegatedDao().list(this.filters, this.pageStart,
 						this.pageSize);
 			}
-			
+
 		} else {
 			if (this.isSortable() && this.isPaginable()) {
 				totalCount = getDelegatedDao().count(this.pageStart,
@@ -231,11 +234,12 @@ public abstract class ReadableResource<T, ID extends Serializable, DAO extends G
 				items = getDelegatedDao().list(this.pageStart, this.pageSize);
 			}
 		}
-		
+
 		if (this.isUseKeyForQuery()) {
 			return Response.ok(item).build();
 		} else {
-			ServiceUtils.validarEncontrado(items, "No se encontraron datos");
+			ServiceUtils.validarEncontrado(items, Messages
+					.getString("ReadableResource.NO_DATA_FOUND_MESSAGE")); //$NON-NLS-1$
 			PagedList<T> pagedList = new PagedList<>(items, totalCount);
 			return Response.ok(pagedList).build();
 		}

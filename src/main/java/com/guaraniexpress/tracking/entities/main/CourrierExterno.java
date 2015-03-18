@@ -7,10 +7,11 @@ package com.guaraniexpress.tracking.entities.main;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "courrier_externo")
+@Table(name = "courrier_externo", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CourrierExterno.findAll", query = "SELECT c FROM CourrierExterno c"),
@@ -35,10 +36,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class CourrierExterno implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_courrier_externo")
-    private Integer idCourrierExterno;
+    private Short idCourrierExterno;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -52,20 +53,20 @@ public class CourrierExterno implements Serializable {
     public CourrierExterno() {
     }
 
-    public CourrierExterno(Integer idCourrierExterno) {
+    public CourrierExterno(Short idCourrierExterno) {
         this.idCourrierExterno = idCourrierExterno;
     }
 
-    public CourrierExterno(Integer idCourrierExterno, String nombre) {
+    public CourrierExterno(Short idCourrierExterno, String nombre) {
         this.idCourrierExterno = idCourrierExterno;
         this.nombre = nombre;
     }
 
-    public Integer getIdCourrierExterno() {
+    public Short getIdCourrierExterno() {
         return idCourrierExterno;
     }
 
-    public void setIdCourrierExterno(Integer idCourrierExterno) {
+    public void setIdCourrierExterno(Short idCourrierExterno) {
         this.idCourrierExterno = idCourrierExterno;
     }
 
@@ -117,7 +118,7 @@ public class CourrierExterno implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.CourrierExterno[ idCourrierExterno=" + idCourrierExterno + " ]";
+        return "com.guaraniexpress.tracking.entities.main.CourrierExterno[ idCourrierExterno=" + idCourrierExterno + " ]";
     }
     
 }

@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "dominio_informacion_contacto")
+@Table(name = "dominio_informacion_contacto", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DominioInformacionContacto.findAll", query = "SELECT d FROM DominioInformacionContacto d"),
@@ -36,8 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class DominioInformacionContacto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_dominio_informacion_contacto")
     private Integer idDominioInformacionContacto;
     @Basic(optional = false)
@@ -118,7 +120,7 @@ public class DominioInformacionContacto implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.DominioInformacionContacto[ idDominioInformacionContacto=" + idDominioInformacionContacto + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.DominioInformacionContacto[ idDominioInformacionContacto=" + idDominioInformacionContacto + " ]";
     }
     
 }

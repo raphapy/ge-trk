@@ -5,21 +5,22 @@
  */
 package com.guaraniexpress.tracking.entities.main;
 
+import com.guaraniexpress.tracking.entities.application.Usuario;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,27 +29,31 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.guaraniexpress.tracking.entities.application.Usuario;
-
 /**
  *
  * @author raphapy
  */
 @Entity
-@Table(name = "tracking_carga")
+@Table(name = "tracking_carga", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TrackingCarga.findAll", query = "SELECT t FROM TrackingCarga t"),
-    @NamedQuery(name = "TrackingCarga.findByCarga", query = "SELECT t FROM TrackingCarga t WHERE t.carga = :carga"),
+    @NamedQuery(name = "TrackingCarga.findByIdTrackingCarga", query = "SELECT t FROM TrackingCarga t WHERE t.idTrackingCarga = :idTrackingCarga"),
+    @NamedQuery(name = "TrackingCarga.findByFechaCreacion", query = "SELECT t FROM TrackingCarga t WHERE t.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "TrackingCarga.findByTrackingId", query = "SELECT t FROM TrackingCarga t WHERE t.trackingId = :trackingId"),
-    @NamedQuery(name = "TrackingCarga.findByFechaCreacion", query = "SELECT t FROM TrackingCarga t WHERE t.fechaCreacion = :fechaCreacion")})
+    @NamedQuery(name = "TrackingCarga.findByCarga", query = "SELECT t FROM TrackingCarga t WHERE t.carga = :carga")})
 public class TrackingCarga implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_tracking_carga")
+    private Integer idTrackingCarga;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "carga")
-    private Integer carga;
+    @Column(name = "fecha_creacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaCreacion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 16)
@@ -56,40 +61,45 @@ public class TrackingCarga implements Serializable {
     private String trackingId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fecha_creacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCreacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trackingCarga1")
+    @Column(name = "carga")
+    private int carga;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trackingCarga")
     private List<DetalleTrackingCarga> detalleTrackingCargaList;
-    @JoinColumn(name = "estado", referencedColumnName = "id_estado_tracking")
-    @ManyToOne(optional = false)
-    private EstadoTracking estado;
     @JoinColumn(name = "usuario_creacion", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
     private Usuario usuarioCreacion;
-    @JoinColumn(name = "carga", referencedColumnName = "id_carga", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Carga carga1;
+    @JoinColumn(name = "estado", referencedColumnName = "id_estado_tracking")
+    @ManyToOne(optional = false)
+    private EstadoTracking estado;
 
     public TrackingCarga() {
     }
 
-    public TrackingCarga(Integer carga) {
-        this.carga = carga;
+    public TrackingCarga(Integer idTrackingCarga) {
+        this.idTrackingCarga = idTrackingCarga;
     }
 
-    public TrackingCarga(Integer carga, String trackingId, Date fechaCreacion) {
-        this.carga = carga;
-        this.trackingId = trackingId;
+    public TrackingCarga(Integer idTrackingCarga, Date fechaCreacion, String trackingId, int carga) {
+        this.idTrackingCarga = idTrackingCarga;
         this.fechaCreacion = fechaCreacion;
-    }
-
-    public Integer getCarga() {
-        return carga;
-    }
-
-    public void setCarga(Integer carga) {
+        this.trackingId = trackingId;
         this.carga = carga;
+    }
+
+    public Integer getIdTrackingCarga() {
+        return idTrackingCarga;
+    }
+
+    public void setIdTrackingCarga(Integer idTrackingCarga) {
+        this.idTrackingCarga = idTrackingCarga;
+    }
+
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     public String getTrackingId() {
@@ -100,12 +110,12 @@ public class TrackingCarga implements Serializable {
         this.trackingId = trackingId;
     }
 
-    public Date getFechaCreacion() {
-        return fechaCreacion;
+    public int getCarga() {
+        return carga;
     }
 
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setCarga(int carga) {
+        this.carga = carga;
     }
 
     @XmlTransient
@@ -117,14 +127,6 @@ public class TrackingCarga implements Serializable {
         this.detalleTrackingCargaList = detalleTrackingCargaList;
     }
 
-    public EstadoTracking getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoTracking estado) {
-        this.estado = estado;
-    }
-
     public Usuario getUsuarioCreacion() {
         return usuarioCreacion;
     }
@@ -133,18 +135,18 @@ public class TrackingCarga implements Serializable {
         this.usuarioCreacion = usuarioCreacion;
     }
 
-    public Carga getCarga1() {
-        return carga1;
+    public EstadoTracking getEstado() {
+        return estado;
     }
 
-    public void setCarga1(Carga carga1) {
-        this.carga1 = carga1;
+    public void setEstado(EstadoTracking estado) {
+        this.estado = estado;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (carga != null ? carga.hashCode() : 0);
+        hash += (idTrackingCarga != null ? idTrackingCarga.hashCode() : 0);
         return hash;
     }
 
@@ -155,7 +157,7 @@ public class TrackingCarga implements Serializable {
             return false;
         }
         TrackingCarga other = (TrackingCarga) object;
-        if ((this.carga == null && other.carga != null) || (this.carga != null && !this.carga.equals(other.carga))) {
+        if ((this.idTrackingCarga == null && other.idTrackingCarga != null) || (this.idTrackingCarga != null && !this.idTrackingCarga.equals(other.idTrackingCarga))) {
             return false;
         }
         return true;
@@ -163,7 +165,7 @@ public class TrackingCarga implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.TrackingCarga[ carga=" + carga + " ]";
+        return "com.guaraniexpress.tracking.entities.main.TrackingCarga[ idTrackingCarga=" + idTrackingCarga + " ]";
     }
     
 }

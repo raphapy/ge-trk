@@ -8,22 +8,21 @@ package com.guaraniexpress.tracking.entities.main;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "carga")
+@Table(name = "carga", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Carga.findAll", query = "SELECT c FROM Carga c"),
@@ -47,8 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Carga implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_carga")
     private Integer idCarga;
     @Column(name = "fecha_salida_estimada")
@@ -77,8 +76,6 @@ public class Carga implements Serializable {
     private CourrierExterno courrierExterno;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "carga")
     private List<Paquete> paqueteList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "carga1")
-    private TrackingCarga trackingCarga;
 
     public Carga() {
     }
@@ -168,14 +165,6 @@ public class Carga implements Serializable {
         this.paqueteList = paqueteList;
     }
 
-    public TrackingCarga getTrackingCarga() {
-        return trackingCarga;
-    }
-
-    public void setTrackingCarga(TrackingCarga trackingCarga) {
-        this.trackingCarga = trackingCarga;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -198,7 +187,7 @@ public class Carga implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Carga[ idCarga=" + idCarga + " ]";
+        return "com.guaraniexpress.tracking.entities.main.Carga[ idCarga=" + idCarga + " ]";
     }
     
 }

@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,26 +28,21 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "tipo_informacion_contacto")
+@Table(name = "tipo_informacion_contacto", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoInformacionContacto.findAll", query = "SELECT t FROM TipoInformacionContacto t"),
     @NamedQuery(name = "TipoInformacionContacto.findByIdTipoInformacionContacto", query = "SELECT t FROM TipoInformacionContacto t WHERE t.idTipoInformacionContacto = :idTipoInformacionContacto"),
-    @NamedQuery(name = "TipoInformacionContacto.findByNombre", query = "SELECT t FROM TipoInformacionContacto t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TipoInformacionContacto.findByDescripcion", query = "SELECT t FROM TipoInformacionContacto t WHERE t.descripcion = :descripcion"),
-    @NamedQuery(name = "TipoInformacionContacto.findByFormato", query = "SELECT t FROM TipoInformacionContacto t WHERE t.formato = :formato")})
+    @NamedQuery(name = "TipoInformacionContacto.findByFormato", query = "SELECT t FROM TipoInformacionContacto t WHERE t.formato = :formato"),
+    @NamedQuery(name = "TipoInformacionContacto.findByNombre", query = "SELECT t FROM TipoInformacionContacto t WHERE t.nombre = :nombre")})
 public class TipoInformacionContacto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_tipo_informacion_contacto")
     private Integer idTipoInformacionContacto;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
-    private String nombre;
     @Size(max = 200)
     @Column(name = "descripcion")
     private String descripcion;
@@ -54,6 +51,11 @@ public class TipoInformacionContacto implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "formato")
     private String formato;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "nombre")
+    private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoInformacionContacto")
     private List<InformacionContactoPersona> informacionContactoPersonaList;
 
@@ -64,10 +66,10 @@ public class TipoInformacionContacto implements Serializable {
         this.idTipoInformacionContacto = idTipoInformacionContacto;
     }
 
-    public TipoInformacionContacto(Integer idTipoInformacionContacto, String nombre, String formato) {
+    public TipoInformacionContacto(Integer idTipoInformacionContacto, String formato, String nombre) {
         this.idTipoInformacionContacto = idTipoInformacionContacto;
-        this.nombre = nombre;
         this.formato = formato;
+        this.nombre = nombre;
     }
 
     public Integer getIdTipoInformacionContacto() {
@@ -76,14 +78,6 @@ public class TipoInformacionContacto implements Serializable {
 
     public void setIdTipoInformacionContacto(Integer idTipoInformacionContacto) {
         this.idTipoInformacionContacto = idTipoInformacionContacto;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getDescripcion() {
@@ -100,6 +94,14 @@ public class TipoInformacionContacto implements Serializable {
 
     public void setFormato(String formato) {
         this.formato = formato;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
@@ -133,7 +135,7 @@ public class TipoInformacionContacto implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.TipoInformacionContacto[ idTipoInformacionContacto=" + idTipoInformacionContacto + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.TipoInformacionContacto[ idTipoInformacionContacto=" + idTipoInformacionContacto + " ]";
     }
     
 }

@@ -27,13 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "sitio_recepcion_envio")
+@Table(name = "sitio_recepcion_envio", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SitioRecepcionEnvio.findAll", query = "SELECT s FROM SitioRecepcionEnvio s"),
     @NamedQuery(name = "SitioRecepcionEnvio.findByIdSitioRecepcionEnvio", query = "SELECT s FROM SitioRecepcionEnvio s WHERE s.idSitioRecepcionEnvio = :idSitioRecepcionEnvio"),
-    @NamedQuery(name = "SitioRecepcionEnvio.findByNombre", query = "SELECT s FROM SitioRecepcionEnvio s WHERE s.nombre = :nombre"),
-    @NamedQuery(name = "SitioRecepcionEnvio.findByDescripcion", query = "SELECT s FROM SitioRecepcionEnvio s WHERE s.descripcion = :descripcion")})
+    @NamedQuery(name = "SitioRecepcionEnvio.findByDescripcion", query = "SELECT s FROM SitioRecepcionEnvio s WHERE s.descripcion = :descripcion"),
+    @NamedQuery(name = "SitioRecepcionEnvio.findByNombre", query = "SELECT s FROM SitioRecepcionEnvio s WHERE s.nombre = :nombre")})
 public class SitioRecepcionEnvio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,14 +41,14 @@ public class SitioRecepcionEnvio implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_sitio_recepcion_envio")
     private Integer idSitioRecepcionEnvio;
+    @Size(max = 200)
+    @Column(name = "descripcion")
+    private String descripcion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
-    @Size(max = 200)
-    @Column(name = "descripcion")
-    private String descripcion;
     @OneToMany(mappedBy = "origen")
     private List<DetalleTrackingPaquete> detalleTrackingPaqueteList;
     @OneToMany(mappedBy = "destino")
@@ -78,20 +78,20 @@ public class SitioRecepcionEnvio implements Serializable {
         this.idSitioRecepcionEnvio = idSitioRecepcionEnvio;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getDescripcion() {
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
@@ -152,7 +152,7 @@ public class SitioRecepcionEnvio implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.SitioRecepcionEnvio[ idSitioRecepcionEnvio=" + idSitioRecepcionEnvio + " ]";
+        return "com.guaraniexpress.tracking.entities.main.SitioRecepcionEnvio[ idSitioRecepcionEnvio=" + idSitioRecepcionEnvio + " ]";
     }
     
 }

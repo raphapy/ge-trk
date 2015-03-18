@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,30 +28,30 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "evento_tracking")
+@Table(name = "evento_tracking", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EventoTracking.findAll", query = "SELECT e FROM EventoTracking e"),
     @NamedQuery(name = "EventoTracking.findByIdEventoTracking", query = "SELECT e FROM EventoTracking e WHERE e.idEventoTracking = :idEventoTracking"),
-    @NamedQuery(name = "EventoTracking.findByNombre", query = "SELECT e FROM EventoTracking e WHERE e.nombre = :nombre"),
-    @NamedQuery(name = "EventoTracking.findByDescripcion", query = "SELECT e FROM EventoTracking e WHERE e.descripcion = :descripcion")})
+    @NamedQuery(name = "EventoTracking.findByDescripcion", query = "SELECT e FROM EventoTracking e WHERE e.descripcion = :descripcion"),
+    @NamedQuery(name = "EventoTracking.findByNombre", query = "SELECT e FROM EventoTracking e WHERE e.nombre = :nombre")})
 public class EventoTracking implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_evento_tracking")
     private Integer idEventoTracking;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
-    private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "descripcion")
     private String descripcion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "nombre")
+    private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoTracking")
     private List<DetalleTrackingPaquete> detalleTrackingPaqueteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoTracking")
@@ -62,10 +64,10 @@ public class EventoTracking implements Serializable {
         this.idEventoTracking = idEventoTracking;
     }
 
-    public EventoTracking(Integer idEventoTracking, String nombre, String descripcion) {
+    public EventoTracking(Integer idEventoTracking, String descripcion, String nombre) {
         this.idEventoTracking = idEventoTracking;
-        this.nombre = nombre;
         this.descripcion = descripcion;
+        this.nombre = nombre;
     }
 
     public Integer getIdEventoTracking() {
@@ -76,20 +78,20 @@ public class EventoTracking implements Serializable {
         this.idEventoTracking = idEventoTracking;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getDescripcion() {
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
@@ -132,7 +134,7 @@ public class EventoTracking implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.EventoTracking[ idEventoTracking=" + idEventoTracking + " ]";
+        return "com.guaraniexpress.tracking.entities.main.EventoTracking[ idEventoTracking=" + idEventoTracking + " ]";
     }
     
 }

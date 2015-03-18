@@ -7,13 +7,15 @@ package com.guaraniexpress.tracking.entities.globals;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -29,19 +31,20 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "ciudad")
+@Table(name = "ciudad", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ciudad.findAll", query = "SELECT c FROM Ciudad c"),
-    @NamedQuery(name = "Ciudad.findByIdCiudad", query = "SELECT c FROM Ciudad c WHERE c.ciudadPK.idCiudad = :idCiudad"),
-    @NamedQuery(name = "Ciudad.findByLocalidad", query = "SELECT c FROM Ciudad c WHERE c.ciudadPK.localidad = :localidad"),
-    @NamedQuery(name = "Ciudad.findByPais", query = "SELECT c FROM Ciudad c WHERE c.ciudadPK.pais = :pais"),
+    @NamedQuery(name = "Ciudad.findByIdCiudad", query = "SELECT c FROM Ciudad c WHERE c.idCiudad = :idCiudad"),
     @NamedQuery(name = "Ciudad.findByCodigo", query = "SELECT c FROM Ciudad c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Ciudad.findByNombre", query = "SELECT c FROM Ciudad c WHERE c.nombre = :nombre")})
 public class Ciudad implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected CiudadPK ciudadPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_ciudad")
+    private Short idCiudad;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2)
@@ -54,35 +57,29 @@ public class Ciudad implements Serializable {
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudad")
     private List<Persona> personaList;
-    @JoinColumns({
-        @JoinColumn(name = "localidad", referencedColumnName = "id_localidad", insertable = false, updatable = false),
-        @JoinColumn(name = "pais", referencedColumnName = "pais", insertable = false, updatable = false)})
+    @JoinColumn(name = "localidad", referencedColumnName = "id_localidad")
     @ManyToOne(optional = false)
-    private Localidad localidad1;
+    private Localidad localidad;
 
     public Ciudad() {
     }
 
-    public Ciudad(CiudadPK ciudadPK) {
-        this.ciudadPK = ciudadPK;
+    public Ciudad(Short idCiudad) {
+        this.idCiudad = idCiudad;
     }
 
-    public Ciudad(CiudadPK ciudadPK, String codigo, String nombre) {
-        this.ciudadPK = ciudadPK;
+    public Ciudad(Short idCiudad, String codigo, String nombre) {
+        this.idCiudad = idCiudad;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public Ciudad(short idCiudad, short localidad, short pais) {
-        this.ciudadPK = new CiudadPK(idCiudad, localidad, pais);
+    public Short getIdCiudad() {
+        return idCiudad;
     }
 
-    public CiudadPK getCiudadPK() {
-        return ciudadPK;
-    }
-
-    public void setCiudadPK(CiudadPK ciudadPK) {
-        this.ciudadPK = ciudadPK;
+    public void setIdCiudad(Short idCiudad) {
+        this.idCiudad = idCiudad;
     }
 
     public String getCodigo() {
@@ -109,19 +106,20 @@ public class Ciudad implements Serializable {
     public void setPersonaList(List<Persona> personaList) {
         this.personaList = personaList;
     }
-
-    public Localidad getLocalidad1() {
-        return localidad1;
+    
+    @XmlTransient
+    public Localidad getLocalidad() {
+        return localidad;
     }
 
-    public void setLocalidad1(Localidad localidad1) {
-        this.localidad1 = localidad1;
+    public void setLocalidad(Localidad localidad) {
+        this.localidad = localidad;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ciudadPK != null ? ciudadPK.hashCode() : 0);
+        hash += (idCiudad != null ? idCiudad.hashCode() : 0);
         return hash;
     }
 
@@ -132,7 +130,7 @@ public class Ciudad implements Serializable {
             return false;
         }
         Ciudad other = (Ciudad) object;
-        if ((this.ciudadPK == null && other.ciudadPK != null) || (this.ciudadPK != null && !this.ciudadPK.equals(other.ciudadPK))) {
+        if ((this.idCiudad == null && other.idCiudad != null) || (this.idCiudad != null && !this.idCiudad.equals(other.idCiudad))) {
             return false;
         }
         return true;
@@ -140,7 +138,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Ciudad[ ciudadPK=" + ciudadPK + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.Ciudad[ idCiudad=" + idCiudad + " ]";
     }
     
 }

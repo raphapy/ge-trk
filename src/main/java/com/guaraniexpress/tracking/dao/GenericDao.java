@@ -16,9 +16,9 @@ public interface GenericDao<T, ID extends Serializable> {
 
     public Map<String, Object> getAttributes(T example, String[] attributes);
 
-    public void save(T entity) throws Exception;
+    public T save(T entity) throws Exception;
 
-    public void update(T entity) throws Exception;
+    public T update(T entity) throws Exception;
 
     public void delete(ID id) throws Exception;
 

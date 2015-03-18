@@ -6,17 +6,16 @@
 package com.guaraniexpress.tracking.entities.main;
 
 import java.io.Serializable;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author raphapy
  */
 @Entity
-@Table(name = "paquete")
+@Table(name = "paquete", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Paquete.findAll", query = "SELECT p FROM Paquete p"),
@@ -41,8 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Paquete implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_paquete")
     private Integer idPaquete;
     @Basic(optional = false)
@@ -67,8 +66,6 @@ public class Paquete implements Serializable {
     @JoinColumn(name = "carga", referencedColumnName = "id_carga")
     @ManyToOne(optional = false)
     private Carga carga;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "paquete1")
-    private TrackingPaquete trackingPaquete;
 
     public Paquete() {
     }
@@ -154,14 +151,6 @@ public class Paquete implements Serializable {
         this.carga = carga;
     }
 
-    public TrackingPaquete getTrackingPaquete() {
-        return trackingPaquete;
-    }
-
-    public void setTrackingPaquete(TrackingPaquete trackingPaquete) {
-        this.trackingPaquete = trackingPaquete;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -184,7 +173,7 @@ public class Paquete implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Paquete[ idPaquete=" + idPaquete + " ]";
+        return "com.guaraniexpress.tracking.entities.main.Paquete[ idPaquete=" + idPaquete + " ]";
     }
     
 }

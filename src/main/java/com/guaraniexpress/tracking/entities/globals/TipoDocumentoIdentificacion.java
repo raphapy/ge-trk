@@ -28,14 +28,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "tipo_documento_identificacion")
+@Table(name = "tipo_documento_identificacion", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoDocumentoIdentificacion.findAll", query = "SELECT t FROM TipoDocumentoIdentificacion t"),
     @NamedQuery(name = "TipoDocumentoIdentificacion.findByIdTipoDocumentoIdentificacion", query = "SELECT t FROM TipoDocumentoIdentificacion t WHERE t.idTipoDocumentoIdentificacion = :idTipoDocumentoIdentificacion"),
-    @NamedQuery(name = "TipoDocumentoIdentificacion.findByNombre", query = "SELECT t FROM TipoDocumentoIdentificacion t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TipoDocumentoIdentificacion.findByDescripcion", query = "SELECT t FROM TipoDocumentoIdentificacion t WHERE t.descripcion = :descripcion"),
-    @NamedQuery(name = "TipoDocumentoIdentificacion.findByFormato", query = "SELECT t FROM TipoDocumentoIdentificacion t WHERE t.formato = :formato")})
+    @NamedQuery(name = "TipoDocumentoIdentificacion.findByFormato", query = "SELECT t FROM TipoDocumentoIdentificacion t WHERE t.formato = :formato"),
+    @NamedQuery(name = "TipoDocumentoIdentificacion.findByNombre", query = "SELECT t FROM TipoDocumentoIdentificacion t WHERE t.nombre = :nombre")})
 public class TipoDocumentoIdentificacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,11 +43,6 @@ public class TipoDocumentoIdentificacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_tipo_documento_identificacion")
     private Short idTipoDocumentoIdentificacion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
-    private String nombre;
     @Size(max = 200)
     @Column(name = "descripcion")
     private String descripcion;
@@ -56,6 +51,11 @@ public class TipoDocumentoIdentificacion implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "formato")
     private String formato;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "nombre")
+    private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoDocumentoIdentificacion")
     private List<DocumentoIdentificacion> documentoIdentificacionList;
 
@@ -66,10 +66,10 @@ public class TipoDocumentoIdentificacion implements Serializable {
         this.idTipoDocumentoIdentificacion = idTipoDocumentoIdentificacion;
     }
 
-    public TipoDocumentoIdentificacion(Short idTipoDocumentoIdentificacion, String nombre, String formato) {
+    public TipoDocumentoIdentificacion(Short idTipoDocumentoIdentificacion, String formato, String nombre) {
         this.idTipoDocumentoIdentificacion = idTipoDocumentoIdentificacion;
-        this.nombre = nombre;
         this.formato = formato;
+        this.nombre = nombre;
     }
 
     public Short getIdTipoDocumentoIdentificacion() {
@@ -78,14 +78,6 @@ public class TipoDocumentoIdentificacion implements Serializable {
 
     public void setIdTipoDocumentoIdentificacion(Short idTipoDocumentoIdentificacion) {
         this.idTipoDocumentoIdentificacion = idTipoDocumentoIdentificacion;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getDescripcion() {
@@ -102,6 +94,14 @@ public class TipoDocumentoIdentificacion implements Serializable {
 
     public void setFormato(String formato) {
         this.formato = formato;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
@@ -135,7 +135,7 @@ public class TipoDocumentoIdentificacion implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.TipoDocumentoIdentificacion[ idTipoDocumentoIdentificacion=" + idTipoDocumentoIdentificacion + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.TipoDocumentoIdentificacion[ idTipoDocumentoIdentificacion=" + idTipoDocumentoIdentificacion + " ]";
     }
     
 }

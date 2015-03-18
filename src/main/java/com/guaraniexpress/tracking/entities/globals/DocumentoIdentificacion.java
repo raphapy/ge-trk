@@ -8,8 +8,10 @@ package com.guaraniexpress.tracking.entities.globals;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,51 +26,52 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author raphapy
  */
 @Entity
-@Table(name = "documento_identificacion")
+@Table(name = "documento_identificacion", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DocumentoIdentificacion.findAll", query = "SELECT d FROM DocumentoIdentificacion d"),
-    @NamedQuery(name = "DocumentoIdentificacion.findByIdDocumentoIdentificacion", query = "SELECT d FROM DocumentoIdentificacion d WHERE d.documentoIdentificacionPK.idDocumentoIdentificacion = :idDocumentoIdentificacion"),
-    @NamedQuery(name = "DocumentoIdentificacion.findByPersonaIdPersona", query = "SELECT d FROM DocumentoIdentificacion d WHERE d.documentoIdentificacionPK.personaIdPersona = :personaIdPersona"),
-    @NamedQuery(name = "DocumentoIdentificacion.findByNumero", query = "SELECT d FROM DocumentoIdentificacion d WHERE d.numero = :numero")})
+    @NamedQuery(name = "DocumentoIdentificacion.findByIdDocumentoIdentificacion", query = "SELECT d FROM DocumentoIdentificacion d WHERE d.idDocumentoIdentificacion = :idDocumentoIdentificacion"),
+    @NamedQuery(name = "DocumentoIdentificacion.findByNumero", query = "SELECT d FROM DocumentoIdentificacion d WHERE d.numero = :numero"),
+    @NamedQuery(name = "DocumentoIdentificacion.findByPersona", query = "SELECT d FROM DocumentoIdentificacion d WHERE d.persona = :persona")})
 public class DocumentoIdentificacion implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected DocumentoIdentificacionPK documentoIdentificacionPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_documento_identificacion")
+    private Short idDocumentoIdentificacion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "numero")
     private String numero;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "persona")
+    private int persona;
     @JoinColumn(name = "tipo_documento_identificacion", referencedColumnName = "id_tipo_documento_identificacion")
     @ManyToOne(optional = false)
     private TipoDocumentoIdentificacion tipoDocumentoIdentificacion;
-    @JoinColumn(name = "persona_id_persona", referencedColumnName = "id_persona", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Persona persona;
 
     public DocumentoIdentificacion() {
     }
 
-    public DocumentoIdentificacion(DocumentoIdentificacionPK documentoIdentificacionPK) {
-        this.documentoIdentificacionPK = documentoIdentificacionPK;
+    public DocumentoIdentificacion(Short idDocumentoIdentificacion) {
+        this.idDocumentoIdentificacion = idDocumentoIdentificacion;
     }
 
-    public DocumentoIdentificacion(DocumentoIdentificacionPK documentoIdentificacionPK, String numero) {
-        this.documentoIdentificacionPK = documentoIdentificacionPK;
+    public DocumentoIdentificacion(Short idDocumentoIdentificacion, String numero, int persona) {
+        this.idDocumentoIdentificacion = idDocumentoIdentificacion;
         this.numero = numero;
+        this.persona = persona;
     }
 
-    public DocumentoIdentificacion(short idDocumentoIdentificacion, int personaIdPersona) {
-        this.documentoIdentificacionPK = new DocumentoIdentificacionPK(idDocumentoIdentificacion, personaIdPersona);
+    public Short getIdDocumentoIdentificacion() {
+        return idDocumentoIdentificacion;
     }
 
-    public DocumentoIdentificacionPK getDocumentoIdentificacionPK() {
-        return documentoIdentificacionPK;
-    }
-
-    public void setDocumentoIdentificacionPK(DocumentoIdentificacionPK documentoIdentificacionPK) {
-        this.documentoIdentificacionPK = documentoIdentificacionPK;
+    public void setIdDocumentoIdentificacion(Short idDocumentoIdentificacion) {
+        this.idDocumentoIdentificacion = idDocumentoIdentificacion;
     }
 
     public String getNumero() {
@@ -79,6 +82,14 @@ public class DocumentoIdentificacion implements Serializable {
         this.numero = numero;
     }
 
+    public int getPersona() {
+        return persona;
+    }
+
+    public void setPersona(int persona) {
+        this.persona = persona;
+    }
+
     public TipoDocumentoIdentificacion getTipoDocumentoIdentificacion() {
         return tipoDocumentoIdentificacion;
     }
@@ -87,18 +98,10 @@ public class DocumentoIdentificacion implements Serializable {
         this.tipoDocumentoIdentificacion = tipoDocumentoIdentificacion;
     }
 
-    public Persona getPersona() {
-        return persona;
-    }
-
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (documentoIdentificacionPK != null ? documentoIdentificacionPK.hashCode() : 0);
+        hash += (idDocumentoIdentificacion != null ? idDocumentoIdentificacion.hashCode() : 0);
         return hash;
     }
 
@@ -109,7 +112,7 @@ public class DocumentoIdentificacion implements Serializable {
             return false;
         }
         DocumentoIdentificacion other = (DocumentoIdentificacion) object;
-        if ((this.documentoIdentificacionPK == null && other.documentoIdentificacionPK != null) || (this.documentoIdentificacionPK != null && !this.documentoIdentificacionPK.equals(other.documentoIdentificacionPK))) {
+        if ((this.idDocumentoIdentificacion == null && other.idDocumentoIdentificacion != null) || (this.idDocumentoIdentificacion != null && !this.idDocumentoIdentificacion.equals(other.idDocumentoIdentificacion))) {
             return false;
         }
         return true;
@@ -117,7 +120,7 @@ public class DocumentoIdentificacion implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.DocumentoIdentificacion[ documentoIdentificacionPK=" + documentoIdentificacionPK + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.DocumentoIdentificacion[ idDocumentoIdentificacion=" + idDocumentoIdentificacion + " ]";
     }
     
 }

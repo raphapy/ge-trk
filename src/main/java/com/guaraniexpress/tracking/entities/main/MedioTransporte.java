@@ -7,7 +7,6 @@ package com.guaraniexpress.tracking.entities.main;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "medio_transporte")
+@Table(name = "medio_transporte", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MedioTransporte.findAll", query = "SELECT m FROM MedioTransporte m"),
@@ -41,7 +40,7 @@ public class MedioTransporte implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_medio_transporte")
-    private Integer idMedioTransporte;
+    private Short idMedioTransporte;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -56,20 +55,20 @@ public class MedioTransporte implements Serializable {
     public MedioTransporte() {
     }
 
-    public MedioTransporte(Integer idMedioTransporte) {
+    public MedioTransporte(Short idMedioTransporte) {
         this.idMedioTransporte = idMedioTransporte;
     }
 
-    public MedioTransporte(Integer idMedioTransporte, String nombre) {
+    public MedioTransporte(Short idMedioTransporte, String nombre) {
         this.idMedioTransporte = idMedioTransporte;
         this.nombre = nombre;
     }
 
-    public Integer getIdMedioTransporte() {
+    public Short getIdMedioTransporte() {
         return idMedioTransporte;
     }
 
-    public void setIdMedioTransporte(Integer idMedioTransporte) {
+    public void setIdMedioTransporte(Short idMedioTransporte) {
         this.idMedioTransporte = idMedioTransporte;
     }
 
@@ -120,7 +119,7 @@ public class MedioTransporte implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.MedioTransporte[ idMedioTransporte=" + idMedioTransporte + " ]";
+        return "com.guaraniexpress.tracking.entities.main.MedioTransporte[ idMedioTransporte=" + idMedioTransporte + " ]";
     }
     
 }

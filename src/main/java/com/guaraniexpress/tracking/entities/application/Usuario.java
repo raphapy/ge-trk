@@ -5,10 +5,13 @@
  */
 package com.guaraniexpress.tracking.entities.application;
 
+import com.guaraniexpress.tracking.entities.main.DetalleTrackingCarga;
+import com.guaraniexpress.tracking.entities.main.DetalleTrackingPaquete;
+import com.guaraniexpress.tracking.entities.main.TrackingCarga;
+import com.guaraniexpress.tracking.entities.main.TrackingPaquete;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +19,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -30,37 +30,50 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.guaraniexpress.tracking.entities.globals.Lenguaje;
-import com.guaraniexpress.tracking.entities.globals.Persona;
-import com.guaraniexpress.tracking.entities.main.DetalleTrackingCarga;
-import com.guaraniexpress.tracking.entities.main.DetalleTrackingPaquete;
-import com.guaraniexpress.tracking.entities.main.TrackingCarga;
-import com.guaraniexpress.tracking.entities.main.TrackingPaquete;
-
 /**
  *
  * @author raphapy
  */
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuario", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
-    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
-    @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre"),
-    @NamedQuery(name = "Usuario.findByEstado", query = "SELECT u FROM Usuario u WHERE u.estado = :estado"),
+    @NamedQuery(name = "Usuario.findByCodigoActivacion", query = "SELECT u FROM Usuario u WHERE u.codigoActivacion = :codigoActivacion"),
     @NamedQuery(name = "Usuario.findByContrasenha", query = "SELECT u FROM Usuario u WHERE u.contrasenha = :contrasenha"),
+    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
+    @NamedQuery(name = "Usuario.findByEstado", query = "SELECT u FROM Usuario u WHERE u.estado = :estado"),
     @NamedQuery(name = "Usuario.findByFechaCreacion", query = "SELECT u FROM Usuario u WHERE u.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "Usuario.findByFechaExpiracion", query = "SELECT u FROM Usuario u WHERE u.fechaExpiracion = :fechaExpiracion"),
-    @NamedQuery(name = "Usuario.findByCodigoActivacion", query = "SELECT u FROM Usuario u WHERE u.codigoActivacion = :codigoActivacion")})
+    @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre"),
+    @NamedQuery(name = "Usuario.findByLenguaje", query = "SELECT u FROM Usuario u WHERE u.lenguaje = :lenguaje"),
+    @NamedQuery(name = "Usuario.findByPersona", query = "SELECT u FROM Usuario u WHERE u.persona = :persona")})
 public class Usuario implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioEvento")
+    private List<DetalleTrackingPaquete> detalleTrackingPaqueteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioEvento")
+    private List<DetalleTrackingCarga> detalleTrackingCargaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioCreacion")
+    private List<TrackingCarga> trackingCargaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioCreacion")
+    private List<TrackingPaquete> trackingPaqueteList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_usuario")
     private Integer idUsuario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 32)
+    @Column(name = "codigo_activacion")
+    private String codigoActivacion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 32)
+    @Column(name = "contrasenha")
+    private String contrasenha;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -69,19 +82,9 @@ public class Usuario implements Serializable {
     private String email;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "nombre")
-    private String nombre;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "estado")
     private String estado;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
-    @Column(name = "contrasenha")
-    private String contrasenha;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_creacion")
@@ -94,25 +97,19 @@ public class Usuario implements Serializable {
     private Date fechaExpiracion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 32)
-    @Column(name = "codigo_activacion")
-    private String codigoActivacion;
-    @ManyToMany(mappedBy = "usuarioList")
-    private List<Rol> rolList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioEvento")
-    private List<DetalleTrackingPaquete> detalleTrackingPaqueteList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioEvento")
-    private List<DetalleTrackingCarga> detalleTrackingCargaList;
-    @JoinColumn(name = "lenguaje", referencedColumnName = "id_lenguaje")
-    @ManyToOne(optional = false)
-    private Lenguaje lenguaje;
-    @JoinColumn(name = "persona", referencedColumnName = "id_persona")
-    @ManyToOne(optional = false)
-    private Persona persona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioCreacion")
-    private List<TrackingCarga> trackingCargaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioCreacion")
-    private List<TrackingPaquete> trackingPaqueteList;
+    @Size(min = 1, max = 20)
+    @Column(name = "nombre")
+    private String nombre;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "lenguaje")
+    private int lenguaje;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "persona")
+    private int persona;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
+    private List<RolUsuario> rolUsuarioList;
 
     public Usuario() {
     }
@@ -121,15 +118,17 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer idUsuario, String email, String nombre, String estado, String contrasenha, Date fechaCreacion, Date fechaExpiracion, String codigoActivacion) {
+    public Usuario(Integer idUsuario, String codigoActivacion, String contrasenha, String email, String estado, Date fechaCreacion, Date fechaExpiracion, String nombre, int lenguaje, int persona) {
         this.idUsuario = idUsuario;
-        this.email = email;
-        this.nombre = nombre;
-        this.estado = estado;
+        this.codigoActivacion = codigoActivacion;
         this.contrasenha = contrasenha;
+        this.email = email;
+        this.estado = estado;
         this.fechaCreacion = fechaCreacion;
         this.fechaExpiracion = fechaExpiracion;
-        this.codigoActivacion = codigoActivacion;
+        this.nombre = nombre;
+        this.lenguaje = lenguaje;
+        this.persona = persona;
     }
 
     public Integer getIdUsuario() {
@@ -140,28 +139,12 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCodigoActivacion() {
+        return codigoActivacion;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setCodigoActivacion(String codigoActivacion) {
+        this.codigoActivacion = codigoActivacion;
     }
 
     public String getContrasenha() {
@@ -170,6 +153,22 @@ public class Usuario implements Serializable {
 
     public void setContrasenha(String contrasenha) {
         this.contrasenha = contrasenha;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Date getFechaCreacion() {
@@ -188,73 +187,37 @@ public class Usuario implements Serializable {
         this.fechaExpiracion = fechaExpiracion;
     }
 
-    public String getCodigoActivacion() {
-        return codigoActivacion;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCodigoActivacion(String codigoActivacion) {
-        this.codigoActivacion = codigoActivacion;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    @XmlTransient
-    public List<Rol> getRolList() {
-        return rolList;
-    }
-
-    public void setRolList(List<Rol> rolList) {
-        this.rolList = rolList;
-    }
-
-    @XmlTransient
-    public List<DetalleTrackingPaquete> getDetalleTrackingPaqueteList() {
-        return detalleTrackingPaqueteList;
-    }
-
-    public void setDetalleTrackingPaqueteList(List<DetalleTrackingPaquete> detalleTrackingPaqueteList) {
-        this.detalleTrackingPaqueteList = detalleTrackingPaqueteList;
-    }
-
-    @XmlTransient
-    public List<DetalleTrackingCarga> getDetalleTrackingCargaList() {
-        return detalleTrackingCargaList;
-    }
-
-    public void setDetalleTrackingCargaList(List<DetalleTrackingCarga> detalleTrackingCargaList) {
-        this.detalleTrackingCargaList = detalleTrackingCargaList;
-    }
-
-    public Lenguaje getLenguaje() {
+    public int getLenguaje() {
         return lenguaje;
     }
 
-    public void setLenguaje(Lenguaje lenguaje) {
+    public void setLenguaje(int lenguaje) {
         this.lenguaje = lenguaje;
     }
 
-    public Persona getPersona() {
+    public int getPersona() {
         return persona;
     }
 
-    public void setPersona(Persona persona) {
+    public void setPersona(int persona) {
         this.persona = persona;
     }
 
     @XmlTransient
-    public List<TrackingCarga> getTrackingCargaList() {
-        return trackingCargaList;
+    public List<RolUsuario> getRolUsuarioList() {
+        return rolUsuarioList;
     }
 
-    public void setTrackingCargaList(List<TrackingCarga> trackingCargaList) {
-        this.trackingCargaList = trackingCargaList;
-    }
-
-    @XmlTransient
-    public List<TrackingPaquete> getTrackingPaqueteList() {
-        return trackingPaqueteList;
-    }
-
-    public void setTrackingPaqueteList(List<TrackingPaquete> trackingPaqueteList) {
-        this.trackingPaqueteList = trackingPaqueteList;
+    public void setRolUsuarioList(List<RolUsuario> rolUsuarioList) {
+        this.rolUsuarioList = rolUsuarioList;
     }
 
     @Override
@@ -279,7 +242,43 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Usuario[ idUsuario=" + idUsuario + " ]";
+        return "com.guaraniexpress.tracking.entities.application.Usuario[ idUsuario=" + idUsuario + " ]";
+    }
+
+    @XmlTransient
+    public List<DetalleTrackingPaquete> getDetalleTrackingPaqueteList() {
+        return detalleTrackingPaqueteList;
+    }
+
+    public void setDetalleTrackingPaqueteList(List<DetalleTrackingPaquete> detalleTrackingPaqueteList) {
+        this.detalleTrackingPaqueteList = detalleTrackingPaqueteList;
+    }
+
+    @XmlTransient
+    public List<DetalleTrackingCarga> getDetalleTrackingCargaList() {
+        return detalleTrackingCargaList;
+    }
+
+    public void setDetalleTrackingCargaList(List<DetalleTrackingCarga> detalleTrackingCargaList) {
+        this.detalleTrackingCargaList = detalleTrackingCargaList;
+    }
+
+    @XmlTransient
+    public List<TrackingCarga> getTrackingCargaList() {
+        return trackingCargaList;
+    }
+
+    public void setTrackingCargaList(List<TrackingCarga> trackingCargaList) {
+        this.trackingCargaList = trackingCargaList;
+    }
+
+    @XmlTransient
+    public List<TrackingPaquete> getTrackingPaqueteList() {
+        return trackingPaqueteList;
+    }
+
+    public void setTrackingPaqueteList(List<TrackingPaquete> trackingPaqueteList) {
+        this.trackingPaqueteList = trackingPaqueteList;
     }
     
 }

@@ -14,8 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "rol")
+@Table(name = "rol", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r"),
@@ -49,11 +47,6 @@ public class Rol implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
-    @JoinTable(name = "rol_aplicacion_usuario", joinColumns = {
-        @JoinColumn(name = "rol", referencedColumnName = "id_rol")}, inverseJoinColumns = {
-        @JoinColumn(name = "usuario", referencedColumnName = "id_usuario")})
-    @ManyToMany
-    private List<Usuario> usuarioList;
     @OneToMany(mappedBy = "rolPadre")
     private List<Rol> rolList;
     @JoinColumn(name = "rol_padre", referencedColumnName = "id_rol")
@@ -86,15 +79,6 @@ public class Rol implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
     }
 
     @XmlTransient
@@ -136,7 +120,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Rol[ idRol=" + idRol + " ]";
+        return "com.guaraniexpress.tracking.entities.application.Rol[ idRol=" + idRol + " ]";
     }
     
 }

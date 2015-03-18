@@ -5,10 +5,10 @@ import javax.ws.rs.Path;
 
 import com.guaraniexpress.tracking.boundary.globals.PaisService;
 import com.guaraniexpress.tracking.entities.globals.Pais;
-import com.guaraniexpress.tracking.web.ReadableResource;
+import com.guaraniexpress.tracking.web.WritableResource;
 
 @Path("paises")
-public class PaisResource extends ReadableResource<Pais, Integer, PaisService> {
+public class PaisResource extends WritableResource<Pais, Short, PaisService> {
 
 	@Inject
 	private PaisService ps;
@@ -24,7 +24,7 @@ public class PaisResource extends ReadableResource<Pais, Integer, PaisService> {
 	}
 
 	@Override
-	protected Class<Integer> getEntityKeyType() {
-		return Integer.class;
+	protected Class<Short> getEntityKeyType() {
+		return Short.class;
 	}
 }

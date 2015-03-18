@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "pais")
+@Table(name = "pais", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pais.findAll", query = "SELECT p FROM Pais p"),
@@ -37,8 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Pais implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_pais")
     private Short idPais;
     @Basic(optional = false)
@@ -54,8 +56,8 @@ public class Pais implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "enabled")
-    private boolean enabled;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pais1")
+    private short enabled;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pais")
     private List<Localidad> localidadList;
 
     public Pais() {
@@ -65,7 +67,7 @@ public class Pais implements Serializable {
         this.idPais = idPais;
     }
 
-    public Pais(Short idPais, String codigo, String nombre, boolean enabled) {
+    public Pais(Short idPais, String codigo, String nombre, short enabled) {
         this.idPais = idPais;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -96,11 +98,11 @@ public class Pais implements Serializable {
         this.nombre = nombre;
     }
 
-    public boolean getEnabled() {
+    public short getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(short enabled) {
         this.enabled = enabled;
     }
 
@@ -135,7 +137,7 @@ public class Pais implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Pais[ idPais=" + idPais + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.Pais[ idPais=" + idPais + " ]";
     }
     
 }

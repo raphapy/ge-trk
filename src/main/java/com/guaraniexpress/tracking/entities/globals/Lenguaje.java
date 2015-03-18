@@ -6,10 +6,7 @@
 package com.guaraniexpress.tracking.entities.globals;
 
 import java.io.Serializable;
-import java.util.List;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,21 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.guaraniexpress.tracking.entities.application.Usuario;
 
 /**
  *
  * @author raphapy
  */
 @Entity
-@Table(name = "lenguaje")
+@Table(name = "lenguaje", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Lenguaje.findAll", query = "SELECT l FROM Lenguaje l"),
@@ -55,8 +48,6 @@ public class Lenguaje implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lenguaje")
-    private List<Usuario> usuarioList;
 
     public Lenguaje() {
     }
@@ -95,15 +86,6 @@ public class Lenguaje implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -126,7 +108,7 @@ public class Lenguaje implements Serializable {
 
     @Override
     public String toString() {
-        return "temp.Lenguaje[ idLenguaje=" + idLenguaje + " ]";
+        return "com.guaraniexpress.tracking.entities.globals.Lenguaje[ idLenguaje=" + idLenguaje + " ]";
     }
     
 }
