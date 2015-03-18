@@ -6,6 +6,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import com.guaraniexpress.tracking.i18n.Messages;
+
 /**
  * 
  * @author Ruben Lopez
@@ -18,9 +20,9 @@ public class RuntimeExceptionMapper implements
 	@Override
 	public Response toResponse(RuntimeException e) {
 		if (e instanceof IllegalStateException) {
-			return build(500, "Error interno del servidor.", e.getMessage());
+			return build(500, Messages.getString("ExceptionMapper.INTERNAL_SERVER_ERROR_MESSAGE"), e.getMessage());
 		} else {
-			return build(500, "Error interno del servidor.", e.getMessage());
+			return build(500, Messages.getString("ExceptionMapper.INTERNAL_SERVER_ERROR_MESSAGE"), e.getMessage()); //$NON-NLS-1$
 		}
 	}
 

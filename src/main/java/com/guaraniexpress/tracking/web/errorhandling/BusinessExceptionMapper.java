@@ -6,6 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import com.guaraniexpress.tracking.exceptions.BusinessException;
+import com.guaraniexpress.tracking.i18n.Messages;
 
 @Provider
 public class BusinessExceptionMapper implements
@@ -23,7 +24,7 @@ public class BusinessExceptionMapper implements
 		} else {
 
 			return Error.build(Status.NOT_ACCEPTABLE.getStatusCode(),
-					"Regla de negocio violada", e.getMessage());
+					Messages.getString("ExceptionMapper.BUSINESS_RULE_VIOLATED_MESSAGE"), e.getMessage()); //$NON-NLS-1$
 
 		}
 	}

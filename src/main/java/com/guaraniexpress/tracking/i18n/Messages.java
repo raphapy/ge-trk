@@ -5,7 +5,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Messages {
-	private static final String BUNDLE_NAME = "trk_exception_messages";
+	private static final String BUNDLE_NAME = "com.guaraniexpress.tracking.i18n.trk_exception_messages";
 
 	private Messages() {
 		
