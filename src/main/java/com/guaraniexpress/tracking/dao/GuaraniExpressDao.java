@@ -10,6 +10,10 @@ import com.guaraniexpress.tracking.resources.GuaraniExpressPersistence;
 public abstract class GuaraniExpressDao<T, ID extends Serializable> extends
 		AbstractDao<T, Serializable> {
 
+	public GuaraniExpressDao(Class<T> entityClass) {
+		super(entityClass);
+	}
+
 	@Inject
 	@GuaraniExpressPersistence
 	private EntityManager em;

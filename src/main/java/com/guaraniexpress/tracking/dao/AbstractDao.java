@@ -20,12 +20,17 @@ import com.guaraniexpress.tracking.i18n.Messages;
 
 public abstract class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID>{
 	
-    public AbstractDao() {
-    }
-    
+	private Class<T> entityClass;
+
+	public AbstractDao(Class<T> entityClass) {
+	    this.entityClass = entityClass;
+	}
+	
     protected abstract EntityManager getEntityManager();
     
-    protected abstract Class<T> getEntityBeanType();
+    private Class<T> getEntityBeanType() {
+    	return this.entityClass;
+    }
 
     private EntityManager getEm() {
         if (getEntityManager() == null) {
