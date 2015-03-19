@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.application;
+package com.guaraniexpress.tracking.entity.application;
 
-import com.guaraniexpress.tracking.entities.main.DetalleTrackingCarga;
-import com.guaraniexpress.tracking.entities.main.DetalleTrackingPaquete;
-import com.guaraniexpress.tracking.entities.main.TrackingCarga;
-import com.guaraniexpress.tracking.entities.main.TrackingPaquete;
+import com.guaraniexpress.tracking.entity.main.DetalleTrackingCarga;
+import com.guaraniexpress.tracking.entity.main.DetalleTrackingPaquete;
+import com.guaraniexpress.tracking.entity.main.TrackingCarga;
+import com.guaraniexpress.tracking.entity.main.TrackingPaquete;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -242,7 +244,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.application.Usuario[ idUsuario=" + idUsuario + " ]";
+        return "com.guaraniexpress.tracking.entity.application.Usuario[ idUsuario=" + idUsuario + " ]";
     }
 
     @XmlTransient

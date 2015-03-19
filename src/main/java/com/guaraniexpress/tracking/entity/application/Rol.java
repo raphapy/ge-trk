@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.application;
+package com.guaraniexpress.tracking.entity.application;
 
 import java.io.Serializable;
 import java.util.List;
@@ -120,7 +120,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.application.Rol[ idRol=" + idRol + " ]";
+        return "com.guaraniexpress.tracking.entity.application.Rol[ idRol=" + idRol + " ]";
     }
     
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.globals;
+package com.guaraniexpress.tracking.entity.globals;
 
 import java.io.Serializable;
 import java.util.List;
@@ -120,7 +120,7 @@ public class DominioInformacionContacto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.globals.DominioInformacionContacto[ idDominioInformacionContacto=" + idDominioInformacionContacto + " ]";
+        return "com.guaraniexpress.tracking.entity.globals.DominioInformacionContacto[ idDominioInformacionContacto=" + idDominioInformacionContacto + " ]";
     }
     
 }

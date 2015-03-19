@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 
 import com.guaraniexpress.tracking.boundary.globals.PaisService;
-import com.guaraniexpress.tracking.entities.globals.Pais;
+import com.guaraniexpress.tracking.entity.globals.Pais;
 import com.guaraniexpress.tracking.web.WritableResource;
 
 @Path("paises")

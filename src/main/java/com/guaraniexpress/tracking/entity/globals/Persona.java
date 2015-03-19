@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.globals;
+package com.guaraniexpress.tracking.entity.globals;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -158,7 +158,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.globals.Persona[ idPersona=" + idPersona + " ]";
+        return "com.guaraniexpress.tracking.entity.globals.Persona[ idPersona=" + idPersona + " ]";
     }
     
 }

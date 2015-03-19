@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.main;
+package com.guaraniexpress.tracking.entity.main;
 
-import com.guaraniexpress.tracking.entities.application.Usuario;
+import com.guaraniexpress.tracking.entity.application.Usuario;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,21 +36,21 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "tracking_paquete", catalog = "guaraniexpress", schema = "")
+@Table(name = "tracking_carga", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TrackingPaquete.findAll", query = "SELECT t FROM TrackingPaquete t"),
-    @NamedQuery(name = "TrackingPaquete.findByIdTrackingPaquete", query = "SELECT t FROM TrackingPaquete t WHERE t.idTrackingPaquete = :idTrackingPaquete"),
-    @NamedQuery(name = "TrackingPaquete.findByFechaCreacion", query = "SELECT t FROM TrackingPaquete t WHERE t.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "TrackingPaquete.findByTrackingId", query = "SELECT t FROM TrackingPaquete t WHERE t.trackingId = :trackingId"),
-    @NamedQuery(name = "TrackingPaquete.findByPaquete", query = "SELECT t FROM TrackingPaquete t WHERE t.paquete = :paquete")})
-public class TrackingPaquete implements Serializable {
+    @NamedQuery(name = "TrackingCarga.findAll", query = "SELECT t FROM TrackingCarga t"),
+    @NamedQuery(name = "TrackingCarga.findByIdTrackingCarga", query = "SELECT t FROM TrackingCarga t WHERE t.idTrackingCarga = :idTrackingCarga"),
+    @NamedQuery(name = "TrackingCarga.findByFechaCreacion", query = "SELECT t FROM TrackingCarga t WHERE t.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "TrackingCarga.findByTrackingId", query = "SELECT t FROM TrackingCarga t WHERE t.trackingId = :trackingId"),
+    @NamedQuery(name = "TrackingCarga.findByCarga", query = "SELECT t FROM TrackingCarga t WHERE t.carga = :carga")})
+public class TrackingCarga implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_tracking_paquete")
-    private Integer idTrackingPaquete;
+    @Column(name = "id_tracking_carga")
+    private Integer idTrackingCarga;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_creacion")
@@ -61,10 +63,10 @@ public class TrackingPaquete implements Serializable {
     private String trackingId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "paquete")
-    private int paquete;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trackingPaquete")
-    private List<DetalleTrackingPaquete> detalleTrackingPaqueteList;
+    @Column(name = "carga")
+    private int carga;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trackingCarga")
+    private List<DetalleTrackingCarga> detalleTrackingCargaList;
     @JoinColumn(name = "usuario_creacion", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
     private Usuario usuarioCreacion;
@@ -72,26 +74,26 @@ public class TrackingPaquete implements Serializable {
     @ManyToOne(optional = false)
     private EstadoTracking estado;
 
-    public TrackingPaquete() {
+    public TrackingCarga() {
     }
 
-    public TrackingPaquete(Integer idTrackingPaquete) {
-        this.idTrackingPaquete = idTrackingPaquete;
+    public TrackingCarga(Integer idTrackingCarga) {
+        this.idTrackingCarga = idTrackingCarga;
     }
 
-    public TrackingPaquete(Integer idTrackingPaquete, Date fechaCreacion, String trackingId, int paquete) {
-        this.idTrackingPaquete = idTrackingPaquete;
+    public TrackingCarga(Integer idTrackingCarga, Date fechaCreacion, String trackingId, int carga) {
+        this.idTrackingCarga = idTrackingCarga;
         this.fechaCreacion = fechaCreacion;
         this.trackingId = trackingId;
-        this.paquete = paquete;
+        this.carga = carga;
     }
 
-    public Integer getIdTrackingPaquete() {
-        return idTrackingPaquete;
+    public Integer getIdTrackingCarga() {
+        return idTrackingCarga;
     }
 
-    public void setIdTrackingPaquete(Integer idTrackingPaquete) {
-        this.idTrackingPaquete = idTrackingPaquete;
+    public void setIdTrackingCarga(Integer idTrackingCarga) {
+        this.idTrackingCarga = idTrackingCarga;
     }
 
     public Date getFechaCreacion() {
@@ -110,21 +112,21 @@ public class TrackingPaquete implements Serializable {
         this.trackingId = trackingId;
     }
 
-    public int getPaquete() {
-        return paquete;
+    public int getCarga() {
+        return carga;
     }
 
-    public void setPaquete(int paquete) {
-        this.paquete = paquete;
+    public void setCarga(int carga) {
+        this.carga = carga;
     }
 
     @XmlTransient
-    public List<DetalleTrackingPaquete> getDetalleTrackingPaqueteList() {
-        return detalleTrackingPaqueteList;
+    public List<DetalleTrackingCarga> getDetalleTrackingCargaList() {
+        return detalleTrackingCargaList;
     }
 
-    public void setDetalleTrackingPaqueteList(List<DetalleTrackingPaquete> detalleTrackingPaqueteList) {
-        this.detalleTrackingPaqueteList = detalleTrackingPaqueteList;
+    public void setDetalleTrackingCargaList(List<DetalleTrackingCarga> detalleTrackingCargaList) {
+        this.detalleTrackingCargaList = detalleTrackingCargaList;
     }
 
     public Usuario getUsuarioCreacion() {
@@ -146,18 +148,18 @@ public class TrackingPaquete implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idTrackingPaquete != null ? idTrackingPaquete.hashCode() : 0);
+        hash += (idTrackingCarga != null ? idTrackingCarga.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TrackingPaquete)) {
+        if (!(object instanceof TrackingCarga)) {
             return false;
         }
-        TrackingPaquete other = (TrackingPaquete) object;
-        if ((this.idTrackingPaquete == null && other.idTrackingPaquete != null) || (this.idTrackingPaquete != null && !this.idTrackingPaquete.equals(other.idTrackingPaquete))) {
+        TrackingCarga other = (TrackingCarga) object;
+        if ((this.idTrackingCarga == null && other.idTrackingCarga != null) || (this.idTrackingCarga != null && !this.idTrackingCarga.equals(other.idTrackingCarga))) {
             return false;
         }
         return true;
@@ -165,7 +167,7 @@ public class TrackingPaquete implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.main.TrackingPaquete[ idTrackingPaquete=" + idTrackingPaquete + " ]";
+        return "com.guaraniexpress.tracking.entity.main.TrackingCarga[ idTrackingCarga=" + idTrackingCarga + " ]";
     }
     
 }

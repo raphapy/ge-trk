@@ -1,7 +1,7 @@
 package com.guaraniexpress.tracking.boundary.globals;
 
 import com.guaraniexpress.tracking.dao.GuaraniExpressDao;
-import com.guaraniexpress.tracking.entities.globals.Pais;
+import com.guaraniexpress.tracking.entity.globals.Pais;
 
 import javax.ejb.Stateless;
 

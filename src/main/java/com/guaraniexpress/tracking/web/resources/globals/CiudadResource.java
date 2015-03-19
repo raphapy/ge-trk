@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 
 import com.guaraniexpress.tracking.boundary.globals.CiudadService;
-import com.guaraniexpress.tracking.entities.globals.Ciudad;
+import com.guaraniexpress.tracking.entity.globals.Ciudad;
 import com.guaraniexpress.tracking.web.WritableResource;
 
 

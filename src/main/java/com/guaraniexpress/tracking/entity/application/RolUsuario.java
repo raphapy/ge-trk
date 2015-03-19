@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.application;
+package com.guaraniexpress.tracking.entity.application;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -104,7 +104,7 @@ public class RolUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.application.RolUsuario[ idRolUsuario=" + idRolUsuario + " ]";
+        return "com.guaraniexpress.tracking.entity.application.RolUsuario[ idRolUsuario=" + idRolUsuario + " ]";
     }
     
 }

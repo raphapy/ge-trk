@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.main;
+package com.guaraniexpress.tracking.entity.main;
 
-import com.guaraniexpress.tracking.entities.application.Usuario;
+import com.guaraniexpress.tracking.entity.application.Usuario;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,19 +31,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author raphapy
  */
 @Entity
-@Table(name = "detalle_tracking_carga", catalog = "guaraniexpress", schema = "")
+@Table(name = "detalle_tracking_paquete", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DetalleTrackingCarga.findAll", query = "SELECT d FROM DetalleTrackingCarga d"),
-    @NamedQuery(name = "DetalleTrackingCarga.findByIdDetalleTrackingCarga", query = "SELECT d FROM DetalleTrackingCarga d WHERE d.idDetalleTrackingCarga = :idDetalleTrackingCarga"),
-    @NamedQuery(name = "DetalleTrackingCarga.findByFechaHora", query = "SELECT d FROM DetalleTrackingCarga d WHERE d.fechaHora = :fechaHora")})
-public class DetalleTrackingCarga implements Serializable {
+    @NamedQuery(name = "DetalleTrackingPaquete.findAll", query = "SELECT d FROM DetalleTrackingPaquete d"),
+    @NamedQuery(name = "DetalleTrackingPaquete.findByIdDetalleTrackingPaquete", query = "SELECT d FROM DetalleTrackingPaquete d WHERE d.idDetalleTrackingPaquete = :idDetalleTrackingPaquete"),
+    @NamedQuery(name = "DetalleTrackingPaquete.findByFechaHora", query = "SELECT d FROM DetalleTrackingPaquete d WHERE d.fechaHora = :fechaHora")})
+public class DetalleTrackingPaquete implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_detalle_tracking_carga")
-    private Short idDetalleTrackingCarga;
+    @Column(name = "id_detalle_tracking_paquete")
+    private Short idDetalleTrackingPaquete;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_hora")
@@ -50,9 +52,6 @@ public class DetalleTrackingCarga implements Serializable {
     @JoinColumn(name = "usuario_evento", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
     private Usuario usuarioEvento;
-    @JoinColumn(name = "tracking_carga", referencedColumnName = "id_tracking_carga")
-    @ManyToOne(optional = false)
-    private TrackingCarga trackingCarga;
     @JoinColumn(name = "evento_tracking", referencedColumnName = "id_evento_tracking")
     @ManyToOne(optional = false)
     private EventoTracking eventoTracking;
@@ -62,25 +61,28 @@ public class DetalleTrackingCarga implements Serializable {
     @JoinColumn(name = "destino", referencedColumnName = "id_sitio_recepcion_envio")
     @ManyToOne
     private SitioRecepcionEnvio destino;
+    @JoinColumn(name = "tracking_paquete", referencedColumnName = "id_tracking_paquete")
+    @ManyToOne(optional = false)
+    private TrackingPaquete trackingPaquete;
 
-    public DetalleTrackingCarga() {
+    public DetalleTrackingPaquete() {
     }
 
-    public DetalleTrackingCarga(Short idDetalleTrackingCarga) {
-        this.idDetalleTrackingCarga = idDetalleTrackingCarga;
+    public DetalleTrackingPaquete(Short idDetalleTrackingPaquete) {
+        this.idDetalleTrackingPaquete = idDetalleTrackingPaquete;
     }
 
-    public DetalleTrackingCarga(Short idDetalleTrackingCarga, Date fechaHora) {
-        this.idDetalleTrackingCarga = idDetalleTrackingCarga;
+    public DetalleTrackingPaquete(Short idDetalleTrackingPaquete, Date fechaHora) {
+        this.idDetalleTrackingPaquete = idDetalleTrackingPaquete;
         this.fechaHora = fechaHora;
     }
 
-    public Short getIdDetalleTrackingCarga() {
-        return idDetalleTrackingCarga;
+    public Short getIdDetalleTrackingPaquete() {
+        return idDetalleTrackingPaquete;
     }
 
-    public void setIdDetalleTrackingCarga(Short idDetalleTrackingCarga) {
-        this.idDetalleTrackingCarga = idDetalleTrackingCarga;
+    public void setIdDetalleTrackingPaquete(Short idDetalleTrackingPaquete) {
+        this.idDetalleTrackingPaquete = idDetalleTrackingPaquete;
     }
 
     public Date getFechaHora() {
@@ -97,14 +99,6 @@ public class DetalleTrackingCarga implements Serializable {
 
     public void setUsuarioEvento(Usuario usuarioEvento) {
         this.usuarioEvento = usuarioEvento;
-    }
-
-    public TrackingCarga getTrackingCarga() {
-        return trackingCarga;
-    }
-
-    public void setTrackingCarga(TrackingCarga trackingCarga) {
-        this.trackingCarga = trackingCarga;
     }
 
     public EventoTracking getEventoTracking() {
@@ -131,21 +125,29 @@ public class DetalleTrackingCarga implements Serializable {
         this.destino = destino;
     }
 
+    public TrackingPaquete getTrackingPaquete() {
+        return trackingPaquete;
+    }
+
+    public void setTrackingPaquete(TrackingPaquete trackingPaquete) {
+        this.trackingPaquete = trackingPaquete;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idDetalleTrackingCarga != null ? idDetalleTrackingCarga.hashCode() : 0);
+        hash += (idDetalleTrackingPaquete != null ? idDetalleTrackingPaquete.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DetalleTrackingCarga)) {
+        if (!(object instanceof DetalleTrackingPaquete)) {
             return false;
         }
-        DetalleTrackingCarga other = (DetalleTrackingCarga) object;
-        if ((this.idDetalleTrackingCarga == null && other.idDetalleTrackingCarga != null) || (this.idDetalleTrackingCarga != null && !this.idDetalleTrackingCarga.equals(other.idDetalleTrackingCarga))) {
+        DetalleTrackingPaquete other = (DetalleTrackingPaquete) object;
+        if ((this.idDetalleTrackingPaquete == null && other.idDetalleTrackingPaquete != null) || (this.idDetalleTrackingPaquete != null && !this.idDetalleTrackingPaquete.equals(other.idDetalleTrackingPaquete))) {
             return false;
         }
         return true;
@@ -153,7 +155,7 @@ public class DetalleTrackingCarga implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.main.DetalleTrackingCarga[ idDetalleTrackingCarga=" + idDetalleTrackingCarga + " ]";
+        return "com.guaraniexpress.tracking.entity.main.DetalleTrackingPaquete[ idDetalleTrackingPaquete=" + idDetalleTrackingPaquete + " ]";
     }
     
 }

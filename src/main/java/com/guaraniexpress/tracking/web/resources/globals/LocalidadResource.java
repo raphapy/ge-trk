@@ -6,8 +6,9 @@
 package com.guaraniexpress.tracking.web.resources.globals;
 
 import com.guaraniexpress.tracking.boundary.globals.LocalidadService;
-import com.guaraniexpress.tracking.entities.globals.Localidad;
+import com.guaraniexpress.tracking.entity.globals.Localidad;
 import com.guaraniexpress.tracking.web.ReadableResource;
+
 import javax.inject.Inject;
 import javax.ws.rs.Path;
 

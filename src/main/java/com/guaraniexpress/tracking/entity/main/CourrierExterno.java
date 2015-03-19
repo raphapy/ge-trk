@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.main;
+package com.guaraniexpress.tracking.entity.main;
 
 import java.io.Serializable;
 import java.util.List;
@@ -118,7 +118,7 @@ public class CourrierExterno implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.main.CourrierExterno[ idCourrierExterno=" + idCourrierExterno + " ]";
+        return "com.guaraniexpress.tracking.entity.main.CourrierExterno[ idCourrierExterno=" + idCourrierExterno + " ]";
     }
     
 }

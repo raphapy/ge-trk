@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guaraniexpress.tracking.entities.globals;
+package com.guaraniexpress.tracking.entity.globals;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,23 +30,23 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author raphapy
  */
 @Entity
-@Table(name = "ciudad", catalog = "guaraniexpress", schema = "")
+@Table(name = "localidad", catalog = "guaraniexpress", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ciudad.findAll", query = "SELECT c FROM Ciudad c"),
-    @NamedQuery(name = "Ciudad.findByIdCiudad", query = "SELECT c FROM Ciudad c WHERE c.idCiudad = :idCiudad"),
-    @NamedQuery(name = "Ciudad.findByCodigo", query = "SELECT c FROM Ciudad c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "Ciudad.findByNombre", query = "SELECT c FROM Ciudad c WHERE c.nombre = :nombre")})
-public class Ciudad implements Serializable {
+    @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
+    @NamedQuery(name = "Localidad.findByIdLocalidad", query = "SELECT l FROM Localidad l WHERE l.idLocalidad = :idLocalidad"),
+    @NamedQuery(name = "Localidad.findByCodigo", query = "SELECT l FROM Localidad l WHERE l.codigo = :codigo"),
+    @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
+public class Localidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_ciudad")
-    private Short idCiudad;
+    @Column(name = "id_localidad")
+    private Short idLocalidad;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2)
+    @Size(min = 1, max = 6)
     @Column(name = "codigo")
     private String codigo;
     @Basic(optional = false)
@@ -55,31 +54,31 @@ public class Ciudad implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudad")
-    private List<Persona> personaList;
-    @JoinColumn(name = "localidad", referencedColumnName = "id_localidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localidad")
+    private List<Ciudad> ciudadList;
+    @JoinColumn(name = "pais", referencedColumnName = "id_pais")
     @ManyToOne(optional = false)
-    private Localidad localidad;
+    private Pais pais;
 
-    public Ciudad() {
+    public Localidad() {
     }
 
-    public Ciudad(Short idCiudad) {
-        this.idCiudad = idCiudad;
+    public Localidad(Short idLocalidad) {
+        this.idLocalidad = idLocalidad;
     }
 
-    public Ciudad(Short idCiudad, String codigo, String nombre) {
-        this.idCiudad = idCiudad;
+    public Localidad(Short idLocalidad, String codigo, String nombre) {
+        this.idLocalidad = idLocalidad;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public Short getIdCiudad() {
-        return idCiudad;
+    public Short getIdLocalidad() {
+        return idLocalidad;
     }
 
-    public void setIdCiudad(Short idCiudad) {
-        this.idCiudad = idCiudad;
+    public void setIdLocalidad(Short idLocalidad) {
+        this.idLocalidad = idLocalidad;
     }
 
     public String getCodigo() {
@@ -99,38 +98,38 @@ public class Ciudad implements Serializable {
     }
 
     @XmlTransient
-    public List<Persona> getPersonaList() {
-        return personaList;
+    public List<Ciudad> getCiudadList() {
+        return ciudadList;
     }
 
-    public void setPersonaList(List<Persona> personaList) {
-        this.personaList = personaList;
+    public void setCiudadList(List<Ciudad> ciudadList) {
+        this.ciudadList = ciudadList;
     }
-    
+
     @XmlTransient
-    public Localidad getLocalidad() {
-        return localidad;
+    public Pais getPais() {
+        return pais;
     }
 
-    public void setLocalidad(Localidad localidad) {
-        this.localidad = localidad;
+    public void setPais(Pais pais) {
+        this.pais = pais;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idCiudad != null ? idCiudad.hashCode() : 0);
+        hash += (idLocalidad != null ? idLocalidad.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ciudad)) {
+        if (!(object instanceof Localidad)) {
             return false;
         }
-        Ciudad other = (Ciudad) object;
-        if ((this.idCiudad == null && other.idCiudad != null) || (this.idCiudad != null && !this.idCiudad.equals(other.idCiudad))) {
+        Localidad other = (Localidad) object;
+        if ((this.idLocalidad == null && other.idLocalidad != null) || (this.idLocalidad != null && !this.idLocalidad.equals(other.idLocalidad))) {
             return false;
         }
         return true;
@@ -138,7 +137,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.guaraniexpress.tracking.entities.globals.Ciudad[ idCiudad=" + idCiudad + " ]";
+        return "com.guaraniexpress.tracking.entity.globals.Localidad[ idLocalidad=" + idLocalidad + " ]";
     }
     
 }

@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 
 import com.guaraniexpress.tracking.boundary.main.PaqueteService;
-import com.guaraniexpress.tracking.entities.main.Paquete;
+import com.guaraniexpress.tracking.entity.main.Paquete;
 import com.guaraniexpress.tracking.web.ReadableResource;
 
 @Path("paquetes")
